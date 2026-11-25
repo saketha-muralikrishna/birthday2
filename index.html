@@ -3,6 +3,3935 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Birthday Surprise ✨</title>
+
+  <!-- Google Fonts: Inter (UI), Playfair Display (Editorial Serif), Caveat (Handwritten) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;600;700&family=Inter:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500&display=swap" rel="stylesheet" />
+
+  <!-- Real ISO/IEC 18004 QR Code Library (with full built-in offline fallback below) -->
+  <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'system-ui', 'sans-serif'],
+            serif: ['"Playfair Display"', 'Georgia', 'serif'],
+            hand: ['Caveat', 'cursive'],
+          },
+        },
+      },
+    };
+  </script>
+
+  <style id="app-styles">
+    /* ==========================================================================
+       1. BASE RESET & 4 LUXURY AESTHETIC COLOR PALETTES
+       ========================================================================== */
+    :root {
+      --font-sans: "Inter", system-ui, -apple-system, sans-serif;
+      --font-serif: "Playfair Display", Georgia, serif;
+      --font-hand: "Caveat", cursive;
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+    }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      min-height: 100%;
+      font-family: var(--font-sans);
+      -webkit-tap-highlight-color: transparent;
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+      overscroll-behavior: none;
+    }
+
+    [hidden], .hidden {
+      display: none !important;
+    }
+
+    /* Strict view isolation: Experience is locked full-viewport; Studio scrolls cleanly */
+    body.mode-experience {
+      height: 100dvh;
+      overflow: hidden;
+    }
+    body.mode-studio {
+      min-height: 100dvh;
+      overflow-x: hidden;
+      overflow-y: auto;
+    }
+    body.mode-experience #studio-view { display: none !important; }
+    body.mode-studio #experience-view { display: none !important; }
+    body.recipient-mode .creator-only-btn { display: none !important; }
+
+    /* Palette 1: Celestial Velvet (Deep Indigo, Orchid & Champagne Gold) */
+    body[data-theme="celestial"] {
+      color-scheme: dark;
+      --bg-grad: radial-gradient(circle at 18% 15%, #2b185e 0%, #120b2e 50%, #070414 100%);
+      --surface: rgba(255, 255, 255, 0.08);
+      --surface-strong: rgba(19, 13, 44, 0.86);
+      --surface-border: rgba(244, 194, 122, 0.26);
+      --studio-card-bg: rgba(18, 12, 42, 0.88);
+      --input-bg: rgba(8, 5, 22, 0.84);
+      --input-border: rgba(244, 194, 122, 0.34);
+      --input-text: #fbf8ff;
+      --input-placeholder: rgba(212, 198, 238, 0.56);
+      --text-main: #fbf8ff;
+      --text-muted: #c9bfe2;
+      --accent: #f4c27a;
+      --accent-2: #e879f9;
+      --accent-text: #1a0f33;
+      --btn-grad: linear-gradient(135deg, #f6cd8d 0%, #e5a44d 100%);
+      --env-body: #251750;
+      --env-flap: #35226e;
+      --seal-bg: radial-gradient(circle at 32% 30%, #fde68a, #d97706 66%, #92400e 100%);
+      --paper-bg: linear-gradient(180deg, #fffdf8 0%, #f8f0e2 100%);
+      --paper-ink: #22173d;
+      --paper-muted: #5d517a;
+      --paper-border: rgba(217, 119, 6, 0.32);
+      --cake-base: #7c3aed;
+      --cake-top: #a855f7;
+      --cake-icing: #fef3c7;
+      --cake-drip: #f4c27a;
+      --orb-1: rgba(168, 85, 247, 0.28);
+      --orb-2: rgba(244, 194, 122, 0.22);
+      --orb-3: rgba(232, 121, 249, 0.14);
+      --dot-inactive: rgba(255, 255, 255, 0.26);
+    }
+
+    /* Palette 2: Blush Champagne (Warm Silk Ivory, Dusty Rose & Burgundy Ink) */
+    body[data-theme="blush"] {
+      color-scheme: light;
+      --bg-grad: radial-gradient(circle at 20% 15%, #fff8f9 0%, #fce6eb 50%, #f3cdd7 100%);
+      --surface: rgba(255, 255, 255, 0.72);
+      --surface-strong: rgba(255, 250, 251, 0.92);
+      --surface-border: rgba(159, 18, 57, 0.2);
+      --studio-card-bg: rgba(255, 250, 251, 0.92);
+      --input-bg: rgba(255, 255, 255, 0.94);
+      --input-border: rgba(159, 18, 57, 0.28);
+      --input-text: #38101d;
+      --input-placeholder: rgba(122, 69, 84, 0.62);
+      --text-main: #38101d;
+      --text-muted: #784252;
+      --accent: #be123c;
+      --accent-2: #d48c70;
+      --accent-text: #ffffff;
+      --btn-grad: linear-gradient(135deg, #be123c 0%, #e11d48 56%, #d97757 100%);
+      --env-body: #f8d4de;
+      --env-flap: #f1bccb;
+      --seal-bg: radial-gradient(circle at 32% 30%, #f9a8d4, #be123c 66%, #881337 100%);
+      --paper-bg: linear-gradient(180deg, #fffdfd 0%, #fdf2f5 100%);
+      --paper-ink: #38101d;
+      --paper-muted: #784252;
+      --paper-border: rgba(190, 18, 60, 0.25);
+      --cake-base: #e11d48;
+      --cake-top: #fb7185;
+      --cake-icing: #fff1f2;
+      --cake-drip: #d48c70;
+      --orb-1: rgba(244, 114, 182, 0.26);
+      --orb-2: rgba(212, 140, 112, 0.25);
+      --orb-3: rgba(251, 113, 133, 0.16);
+      --dot-inactive: rgba(56, 16, 29, 0.22);
+    }
+
+    /* Palette 3: Aurora Borealis (Obsidian Teal, Luminous Mint & Lilac) */
+    body[data-theme="aurora"] {
+      color-scheme: dark;
+      --bg-grad: radial-gradient(circle at 22% 16%, #114742 0%, #092629 50%, #051117 100%);
+      --surface: rgba(255, 255, 255, 0.08);
+      --surface-strong: rgba(7, 30, 34, 0.88);
+      --surface-border: rgba(94, 234, 212, 0.26);
+      --studio-card-bg: rgba(7, 29, 33, 0.9);
+      --input-bg: rgba(4, 18, 22, 0.86);
+      --input-border: rgba(94, 234, 212, 0.34);
+      --input-text: #f0fdfa;
+      --input-placeholder: rgba(167, 220, 212, 0.56);
+      --text-main: #f0fdfa;
+      --text-muted: #a6d5cf;
+      --accent: #5eead4;
+      --accent-2: #c084fc;
+      --accent-text: #042220;
+      --btn-grad: linear-gradient(135deg, #5eead4 0%, #2dd4bf 55%, #38bdf8 100%);
+      --env-body: #0f3d3c;
+      --env-flap: #165250;
+      --seal-bg: radial-gradient(circle at 32% 30%, #a7f3d0, #0d9488 66%, #115e59 100%);
+      --paper-bg: linear-gradient(180deg, #fbfffe 0%, #eefaf7 100%);
+      --paper-ink: #0c2b29;
+      --paper-muted: #3d6360;
+      --paper-border: rgba(13, 148, 136, 0.3);
+      --cake-base: #0d9488;
+      --cake-top: #14b8a6;
+      --cake-icing: #f0fdfa;
+      --cake-drip: #c084fc;
+      --orb-1: rgba(45, 212, 191, 0.24);
+      --orb-2: rgba(192, 132, 252, 0.2);
+      --orb-3: rgba(56, 189, 248, 0.14);
+      --dot-inactive: rgba(255, 255, 255, 0.26);
+    }
+
+    /* Palette 4: Sunset Terracotta (Twilight Plum, Coral & Honey Gold) */
+    body[data-theme="terracotta"] {
+      color-scheme: dark;
+      --bg-grad: radial-gradient(circle at 78% 16%, #54223b 0%, #2b1224 52%, #140814 100%);
+      --surface: rgba(255, 255, 255, 0.08);
+      --surface-strong: rgba(39, 16, 33, 0.88);
+      --surface-border: rgba(251, 146, 60, 0.28);
+      --studio-card-bg: rgba(36, 14, 30, 0.9);
+      --input-bg: rgba(20, 7, 18, 0.86);
+      --input-border: rgba(251, 146, 60, 0.36);
+      --input-text: #fff7f0;
+      --input-placeholder: rgba(235, 195, 180, 0.56);
+      --text-main: #fff7f0;
+      --text-muted: #e3bfb3;
+      --accent: #fb923c;
+      --accent-2: #f472b6;
+      --accent-text: #240c05;
+      --btn-grad: linear-gradient(135deg, #fdba74 0%, #fb923c 50%, #f43f5e 100%);
+      --env-body: #4a1c36;
+      --env-flap: #612647;
+      --seal-bg: radial-gradient(circle at 32% 30%, #fde68a, #ea580c 66%, #9a3412 100%);
+      --paper-bg: linear-gradient(180deg, #fffdf9 0%, #fdf2e9 100%);
+      --paper-ink: #33131d;
+      --paper-muted: #754652;
+      --paper-border: rgba(234, 88, 12, 0.3);
+      --cake-base: #ea580c;
+      --cake-top: #fb923c;
+      --cake-icing: #fffbeb;
+      --cake-drip: #f472b6;
+      --orb-1: rgba(251, 146, 60, 0.26);
+      --orb-2: rgba(244, 114, 182, 0.22);
+      --orb-3: rgba(253, 186, 116, 0.14);
+      --dot-inactive: rgba(255, 255, 255, 0.26);
+    }
+
+    body {
+      background: var(--bg-grad);
+      background-attachment: fixed;
+      color: var(--text-main);
+      transition: background 0.45s ease, color 0.3s ease;
+    }
+
+    .glass-panel {
+      background: var(--surface);
+      border: 1px solid var(--surface-border);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+    }
+
+    .glass-strong {
+      background: var(--surface-strong);
+      border: 1px solid var(--surface-border);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+    }
+
+    .studio-card {
+      background: var(--studio-card-bg);
+      border: 1px solid var(--surface-border);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      box-shadow: 0 18px 46px -18px rgba(0, 0, 0, 0.45);
+    }
+
+    /* High-contrast, always-readable Creator Studio inputs across all 4 themes */
+    .studio-input {
+      background-color: var(--input-bg) !important;
+      color: var(--input-text) !important;
+      border: 1px solid var(--input-border) !important;
+      caret-color: var(--accent);
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+    .studio-input::placeholder {
+      color: var(--input-placeholder) !important;
+      opacity: 1;
+    }
+    .studio-input:focus {
+      outline: none;
+      border-color: var(--accent) !important;
+      box-shadow: 0 0 0 3px rgba(244, 194, 122, 0.22);
+    }
+    .studio-input:-webkit-autofill,
+    .studio-input:-webkit-autofill:hover,
+    .studio-input:-webkit-autofill:focus {
+      -webkit-text-fill-color: var(--input-text) !important;
+      -webkit-box-shadow: 0 0 0px 1000px var(--input-bg) inset !important;
+      transition: background-color 5000s ease-in-out 0s;
+    }
+
+    .text-theme-muted { color: var(--text-muted); }
+    .text-theme-accent { color: var(--accent); }
+
+    .btn-primary {
+      background: var(--btn-grad);
+      color: var(--accent-text);
+      box-shadow: 0 10px 26px -8px rgba(0, 0, 0, 0.36);
+      transition: transform 0.2s cubic-bezier(0.22, 1, 0.36, 1), filter 0.2s ease;
+    }
+    .btn-primary:hover { transform: translateY(-1px) scale(1.015); filter: brightness(1.05); }
+    .btn-primary:active { transform: translateY(1px) scale(0.985); }
+
+    /* ==========================================================================
+       2. SILKY BOOT CURTAIN & GPU-LIGHTWEIGHT AMBIENT ORBS
+       ========================================================================== */
+    #boot-curtain {
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 0.75rem;
+      background: var(--bg-grad, #09061a);
+      color: var(--text-main, #fbf8ff);
+      opacity: 1;
+      transition: opacity 0.42s cubic-bezier(0.22, 1, 0.36, 1), visibility 0.42s ease;
+      will-change: opacity;
+    }
+    #boot-curtain.is-done {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
+    @keyframes curtainSealPulse {
+      0%, 100% { transform: scale(1); opacity: 0.92; }
+      50% { transform: scale(1.08); opacity: 1; }
+    }
+    .boot-seal-icon {
+      width: 58px;
+      height: 58px;
+      border-radius: 9999px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      background: var(--seal-bg, radial-gradient(circle at 32% 30%, #fde68a, #d97706 66%, #92400e 100%));
+      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.45);
+      animation: curtainSealPulse 1.3s ease-in-out infinite;
+    }
+
+    .ambient-orb {
+      position: absolute;
+      border-radius: 9999px;
+      pointer-events: none;
+      transform: translate3d(0, 0, 0);
+      will-change: transform;
+    }
+
+    @keyframes twinkle {
+      0%, 100% { opacity: 0.2; transform: scale(0.8); }
+      50% { opacity: 0.9; transform: scale(1.25); }
+    }
+    .star-dot {
+      position: absolute;
+      border-radius: 9999px;
+      background: var(--accent);
+      animation: twinkle var(--dur, 4s) ease-in-out var(--delay, 0s) infinite;
+      will-change: opacity, transform;
+    }
+
+    /* ==========================================================================
+       3. FULL-VIEWPORT STORY STAGES & GPU-COMPOSITED 60/120FPS TRANSITIONS
+       ========================================================================== */
+    .experience-shell {
+      position: fixed;
+      inset: 0;
+      width: 100%;
+      height: 100dvh;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .story-stage {
+      position: relative;
+      flex: 1 1 auto;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+    }
+
+    .story-page {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 4.5rem 1rem 4.8rem;
+      overflow-y: auto;
+      scrollbar-width: none;
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+      transform: translate3d(34px, 0, 0) scale(0.985);
+      transition:
+        opacity 0.38s cubic-bezier(0.22, 1, 0.36, 1),
+        transform 0.44s cubic-bezier(0.22, 1, 0.36, 1),
+        visibility 0.38s ease;
+      will-change: transform, opacity;
+      backface-visibility: hidden;
+      contain: layout style;
+    }
+    .story-page::-webkit-scrollbar { display: none; }
+    #story-page-1 { overflow: hidden; }
+    body.recipient-mode .story-page { padding-top: 2rem; }
+    .story-page.is-prev { transform: translate3d(-34px, 0, 0) scale(0.985); }
+    .story-page.is-active {
+      opacity: 1;
+      visibility: visible;
+      pointer-events: auto;
+      transform: translate3d(0, 0, 0) scale(1);
+      z-index: 10;
+    }
+
+    /* ==========================================================================
+       4. ENVELOPE, BALLOONS, CAKE, LETTER & POLAROIDS
+       ========================================================================== */
+    .envelope-scene {
+      perspective: 1000px;
+      width: min(340px, 86vw);
+      height: clamp(164px, 26dvh, 218px);
+      position: relative;
+      cursor: pointer;
+    }
+    .envelope-body {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      border-radius: 20px;
+      background: var(--env-body);
+      box-shadow: 0 24px 56px -16px rgba(0, 0, 0, 0.48), inset 0 1px 1px rgba(255, 255, 255, 0.24);
+      transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+      will-change: transform;
+    }
+    .envelope-scene:hover .envelope-body { transform: translate3d(0, -4px, 0); }
+    .envelope-inner-card {
+      position: absolute;
+      left: 7%; right: 7%; top: 10%; bottom: 12%;
+      border-radius: 14px;
+      background: var(--paper-bg);
+      color: var(--paper-ink);
+      border: 1px solid var(--paper-border);
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      padding: 0.9rem; text-align: center; z-index: 2;
+      transition: transform 0.72s cubic-bezier(0.22, 1, 0.36, 1);
+      box-shadow: 0 10px 24px rgba(0, 0, 0, 0.18);
+      will-change: transform;
+    }
+    .envelope-pocket {
+      position: absolute; inset: 0; z-index: 3; border-radius: 20px; overflow: hidden; pointer-events: none;
+    }
+    .envelope-pocket::before {
+      content: ""; position: absolute; inset: 0;
+      background: linear-gradient(150deg, rgba(255,255,255,0.14) 0%, transparent 45%), var(--env-body);
+      clip-path: polygon(0 0, 50% 56%, 100% 0, 100% 100%, 0 100%);
+    }
+    .envelope-pocket::after {
+      content: ""; position: absolute; inset: 0;
+      background: rgba(0, 0, 0, 0.09);
+      clip-path: polygon(0 100%, 50% 48%, 100% 100%);
+    }
+    .envelope-flap {
+      position: absolute; top: 0; left: 0; right: 0; height: 58%;
+      background: var(--env-flap);
+      clip-path: polygon(0 0, 100% 0, 50% 100%);
+      transform-origin: top center;
+      transition: transform 0.72s cubic-bezier(0.22, 1, 0.36, 1), z-index 0.1s 0.25s;
+      z-index: 5; border-top-left-radius: 20px; border-top-right-radius: 20px;
+      filter: drop-shadow(0 6px 12px rgba(0, 0, 0, 0.22));
+      will-change: transform;
+    }
+    .wax-seal {
+      position: absolute; left: 50%; top: 52%; transform: translate(-50%, -50%);
+      width: 56px; height: 56px; border-radius: 9999px;
+      background: var(--seal-bg); z-index: 6;
+      display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.36), inset 0 2px 5px rgba(255, 255, 255, 0.48);
+      border: 2px solid rgba(255, 255, 255, 0.28);
+      transition: transform 0.45s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.35s ease;
+    }
+    .envelope-scene.is-opening .envelope-flap { transform: rotateX(-178deg); z-index: 1; }
+    .envelope-scene.is-opening .wax-seal { transform: translate(-50%, -50%) scale(1.35) rotate(18deg); opacity: 0; }
+    .envelope-scene.is-opening .envelope-inner-card { transform: translate3d(0, -76px, 0) scale(1.04); z-index: 4; }
+
+    @keyframes shakeX {
+      0%, 100% { transform: translateX(0); }
+      20% { transform: translateX(-9px); }
+      40% { transform: translateX(8px); }
+      60% { transform: translateX(-6px); }
+      80% { transform: translateX(5px); }
+    }
+    .animate-shake { animation: shakeX 0.4s ease; }
+
+    @keyframes pulseGlow {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(244, 194, 122, 0.5); }
+      50% { box-shadow: 0 0 26px 5px rgba(244, 194, 122, 0.68); }
+    }
+    .cta-glow { animation: pulseGlow 1.9s ease-in-out infinite; }
+
+    /* Balloons */
+    @keyframes floatBob {
+      0%, 100% { transform: translate3d(0, 0px, 0) rotate(-2deg); }
+      50% { transform: translate3d(0, -13px, 0) rotate(2.5deg); }
+    }
+    .balloon-bob {
+      animation: floatBob var(--bob-dur, 4.1s) ease-in-out var(--bob-delay, 0s) infinite;
+      will-change: transform;
+    }
+    @keyframes balloonBurstOut {
+      0% { transform: scale(1); opacity: 1; }
+      55% { transform: scale(1.24); opacity: 0.72; }
+      100% { transform: scale(0.2); opacity: 0; }
+    }
+    .balloon-bursting {
+      animation: balloonBurstOut 0.18s cubic-bezier(0.22, 1, 0.36, 1) forwards !important;
+      pointer-events: none;
+    }
+    @keyframes popReveal {
+      0% { transform: scale(0.76); opacity: 0; }
+      72% { transform: scale(1.04); opacity: 1; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+    .wish-pop-in { animation: popReveal 0.4s cubic-bezier(0.22, 1, 0.36, 1) forwards; }
+
+    /* Cake Flames, Smoke & Slice */
+    @keyframes flicker {
+      0%, 100% { transform: scaleX(1) scaleY(1) rotate(-2deg); opacity: 0.96; }
+      45% { transform: scaleX(0.92) scaleY(1.1) rotate(3deg); opacity: 1; }
+      75% { transform: scaleX(1.08) scaleY(0.94) rotate(-1deg); opacity: 0.92; }
+    }
+    .flame-group {
+      transform-origin: 0px 0px;
+      animation: flicker 0.24s ease-in-out infinite;
+    }
+    @keyframes smokeRise {
+      0% { transform: translateY(0) scale(0.5); opacity: 0; }
+      20% { opacity: 0.75; }
+      100% { transform: translateY(-38px) translateX(6px) scale(1.65); opacity: 0; }
+    }
+    .smoke-wisp { opacity: 0; pointer-events: none; }
+    .smoke-wisp.is-smoking { animation: smokeRise 1.5s ease-out forwards; }
+
+    .cake-slice-group { transition: transform 0.85s cubic-bezier(0.22, 1, 0.36, 1); }
+    .cake-cut .cake-slice-group { transform: translate(42px, 14px) rotate(7deg); }
+
+    /* Stationery Paper (Large Full Birthday Letter) */
+    .stationery-paper {
+      background:
+        repeating-linear-gradient(
+          0deg,
+          rgba(120, 90, 60, 0.03) 0px,
+          rgba(120, 90, 60, 0.03) 1px,
+          transparent 1px,
+          transparent 30px
+        ),
+        var(--paper-bg);
+      color: var(--paper-ink);
+      border: 1px solid var(--paper-border);
+      box-shadow: 0 28px 70px -20px rgba(0, 0, 0, 0.46), inset 0 0 0 8px rgba(255, 255, 255, 0.4);
+    }
+    .letter-scroll::-webkit-scrollbar { width: 6px; }
+    .letter-scroll::-webkit-scrollbar-thumb {
+      background: rgba(180, 120, 70, 0.35);
+      border-radius: 9999px;
+    }
+
+    /* Polaroid 3D Stack */
+    .polaroid-deck {
+      position: relative;
+      width: min(335px, 84vw);
+      height: min(385px, 50dvh);
+      min-height: 295px;
+      perspective: 1100px;
+    }
+    .polaroid-card {
+      position: absolute;
+      inset: 0;
+      background: #ffffff;
+      color: #27201c;
+      border-radius: 14px;
+      padding: 12px 12px 14px;
+      box-shadow: 0 22px 46px -12px rgba(0, 0, 0, 0.44), 0 2px 6px rgba(0, 0, 0, 0.14);
+      transition: transform 0.46s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.36s ease;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      user-select: none;
+      will-change: transform, opacity;
+      backface-visibility: hidden;
+    }
+    .polaroid-card.toss-out {
+      transform: translate3d(-112%, 0, 0) rotate(-16deg) scale(0.92) !important;
+      opacity: 0 !important;
+    }
+    .polaroid-card.toss-right {
+      transform: translate3d(112%, 0, 0) rotate(16deg) scale(0.92) !important;
+      opacity: 0 !important;
+    }
+    .polaroid-photo-frame {
+      position: relative;
+      width: 100%;
+      flex: 1 1 auto;
+      min-height: 205px;
+      border-radius: 10px;
+      overflow: hidden;
+      background: #1d1830;
+    }
+    .polaroid-photo-frame img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    #fx-canvas {
+      position: fixed;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 45;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .story-page, .balloon-bob, .star-dot, .cta-glow {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.12s !important;
+      }
+    }
+
+    @media print {
+      body { background: #ffffff !important; color: #111827 !important; overflow: visible !important; height: auto !important; }
+      #boot-curtain, #floating-topbar, #recipient-mini-bar, #story-bottom-nav, #fx-canvas, #toast-box, #studio-view, .no-print { display: none !important; }
+      #experience-view { position: static !important; height: auto !important; overflow: visible !important; }
+      .story-page { display: none !important; }
+      #story-page-6 { display: flex !important; position: static !important; opacity: 1 !important; visibility: visible !important; transform: none !important; padding: 0 !important; }
+    }
+  </style>
+</head>
+
+<body data-theme="celestial" class="mode-experience">
+  <!-- Silky Boot Curtain: prevents any flash of defaults or unstyled layout on link open -->
+  <div id="boot-curtain">
+    <div class="boot-seal-icon">✨</div>
+    <p id="boot-curtain-label" style="font-size:12px;letter-spacing:0.24em;text-transform:uppercase;font-weight:700;color:#f4c27a;margin:0;">
+      Unsealing your surprise...
+    </p>
+  </div>
+
+  <!-- Confetti & Fireworks FX Canvas -->
+  <canvas id="fx-canvas"></canvas>
+
+  <!-- Lightweight GPU-Friendly Ambient Orbs & Starlight Backdrop -->
+  <div class="fixed inset-0 pointer-events-none overflow-hidden z-0" aria-hidden="true">
+    <div class="ambient-orb -top-36 -left-32 w-[36rem] h-[36rem]" style="background: radial-gradient(circle, var(--orb-1) 0%, transparent 70%);"></div>
+    <div class="ambient-orb -bottom-40 -right-32 w-[36rem] h-[36rem]" style="background: radial-gradient(circle, var(--orb-2) 0%, transparent 70%);"></div>
+    <div class="ambient-orb top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[32rem] h-[32rem] opacity-75" style="background: radial-gradient(circle, var(--orb-3) 0%, transparent 70%);"></div>
+    <div id="stars-container" class="absolute inset-0"></div>
+  </div>
+
+  <!-- Toast Notification (replaces alert/confirm) -->
+  <div id="toast-box" class="fixed top-20 left-1/2 -translate-x-1/2 z-[70] hidden glass-strong px-4 py-2.5 rounded-full shadow-2xl flex items-center gap-2 text-xs sm:text-sm font-semibold whitespace-nowrap">
+    <span id="toast-emoji">✨</span>
+    <span id="toast-message">Updated!</span>
+  </div>
+
+  <!-- Discreet Recipient Mini-Bar (only audio toggle visible to birthday person) -->
+  <div id="recipient-mini-bar" hidden class="hidden fixed top-3 right-3 z-50 flex items-center gap-2">
+    <button type="button" onclick="toggleAudio()" title="Mute / Unmute Sound" class="w-9 h-9 rounded-full glass-strong flex items-center justify-center text-sm shadow-lg hover:scale-105 transition-transform">
+      <span class="audio-icon-sync">🔊</span>
+    </button>
+    <button type="button" onclick="exitRecipientMode()" class="creator-only-btn glass-strong px-3.5 py-2 rounded-full text-xs font-semibold text-theme-accent shadow-lg hover:scale-105 transition-transform">
+      ✨ Create Your Own
+    </button>
+  </div>
+
+  <!-- Floating Aesthetic Top Bar (hidden in Recipient Mode) -->
+  <header id="floating-topbar" class="fixed top-3 left-1/2 -translate-x-1/2 z-50 w-[min(96vw,840px)] transition-all duration-300">
+    <div class="glass-strong rounded-full px-3 sm:px-4 py-1.5 shadow-xl flex items-center justify-between gap-2">
+      <!-- Brand -->
+      <div class="flex items-center gap-2 shrink-0 pl-1">
+        <div class="w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold shadow-sm" style="background: var(--btn-grad); color: var(--accent-text);">
+          ✦
+        </div>
+        <span class="font-serif font-bold text-sm sm:text-base tracking-tight hidden sm:inline">Bespoke Wishes</span>
+      </div>
+
+      <!-- Separate View Switcher -->
+      <div class="flex items-center p-0.5 rounded-full border" style="border-color: var(--surface-border); background: rgba(0, 0, 0, 0.16);">
+        <button id="tab-exp-btn" type="button" onclick="switchTab('experience')" class="px-3.5 sm:px-4 py-1.5 rounded-full text-xs font-bold transition-all">
+          🎁 Birthday Preview
+        </button>
+        <button id="tab-studio-btn" type="button" onclick="switchTab('studio')" class="px-3.5 sm:px-4 py-1.5 rounded-full text-xs font-bold transition-all">
+          ✨ Creator Studio
+        </button>
+      </div>
+
+      <!-- Quick Controls -->
+      <div class="flex items-center gap-1.5 shrink-0">
+        <button type="button" onclick="cycleAestheticTheme()" title="Switch Aesthetic Color Palette" class="w-8 h-8 rounded-full glass-panel flex items-center justify-center text-sm hover:scale-105 transition-transform">
+          🎨
+        </button>
+        <button type="button" onclick="toggleAudio()" title="Mute / Unmute Sound" class="w-8 h-8 rounded-full glass-panel flex items-center justify-center text-sm hover:scale-105 transition-transform">
+          <span class="audio-icon-sync">🔊</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- =========================================================================
+       VIEW 1: FULL-SCREEN INTERACTIVE BIRTHDAY EXPERIENCE (6 PAGES)
+       ========================================================================= -->
+  <div id="experience-view" class="experience-shell z-10">
+    <main class="story-stage">
+
+      <!-- ==================== PAGE 1: PASSCODE / WAX-SEALED COVER ==================== -->
+      <section id="story-page-1" class="story-page is-active" data-page="1">
+        <!-- Optional 4-Digit Passcode Lock -->
+        <div id="passcode-view" class="hidden w-full max-w-sm mx-auto text-center space-y-5">
+          <div id="pin-card" class="glass-strong rounded-3xl p-6 sm:p-7 shadow-2xl space-y-5">
+            <div class="space-y-1.5">
+              <div class="w-12 h-12 mx-auto rounded-2xl glass-panel flex items-center justify-center text-xl">🔐</div>
+              <p class="text-[11px] uppercase tracking-[0.24em] font-bold text-theme-accent">Private Birthday Vault</p>
+              <h1 class="font-serif text-2xl sm:text-3xl font-bold">For <span class="bind-recipient"></span></h1>
+              <p class="text-xs text-theme-muted">Enter the 4-digit passcode from <span class="bind-sender font-semibold"></span></p>
+            </div>
+
+            <div id="pin-dots" class="flex items-center justify-center gap-3.5 py-1">
+              <div class="pin-dot w-4 h-4 rounded-full border-2 transition-all" style="border-color: var(--accent);"></div>
+              <div class="pin-dot w-4 h-4 rounded-full border-2 transition-all" style="border-color: var(--accent);"></div>
+              <div class="pin-dot w-4 h-4 rounded-full border-2 transition-all" style="border-color: var(--accent);"></div>
+              <div class="pin-dot w-4 h-4 rounded-full border-2 transition-all" style="border-color: var(--accent);"></div>
+            </div>
+            <p id="pin-status-msg" class="text-xs text-rose-400 font-medium min-h-[1rem]"></p>
+
+            <div class="grid grid-cols-3 gap-2.5 max-w-[240px] mx-auto">
+              <button type="button" onclick="enterPinDigit('1')" class="h-12 rounded-2xl glass-panel text-lg font-semibold hover:scale-105 active:scale-95 transition-transform">1</button>
+              <button type="button" onclick="enterPinDigit('2')" class="h-12 rounded-2xl glass-panel text-lg font-semibold hover:scale-105 active:scale-95 transition-transform">2</button>
+              <button type="button" onclick="enterPinDigit('3')" class="h-12 rounded-2xl glass-panel text-lg font-semibold hover:scale-105 active:scale-95 transition-transform">3</button>
+              <button type="button" onclick="enterPinDigit('4')" class="h-12 rounded-2xl glass-panel text-lg font-semibold hover:scale-105 active:scale-95 transition-transform">4</button>
+              <button type="button" onclick="enterPinDigit('5')" class="h-12 rounded-2xl glass-panel text-lg font-semibold hover:scale-105 active:scale-95 transition-transform">5</button>
+              <button type="button" onclick="enterPinDigit('6')" class="h-12 rounded-2xl glass-panel text-lg font-semibold hover:scale-105 active:scale-95 transition-transform">6</button>
+              <button type="button" onclick="enterPinDigit('7')" class="h-12 rounded-2xl glass-panel text-lg font-semibold hover:scale-105 active:scale-95 transition-transform">7</button>
+              <button type="button" onclick="enterPinDigit('8')" class="h-12 rounded-2xl glass-panel text-lg font-semibold hover:scale-105 active:scale-95 transition-transform">8</button>
+              <button type="button" onclick="enterPinDigit('9')" class="h-12 rounded-2xl glass-panel text-lg font-semibold hover:scale-105 active:scale-95 transition-transform">9</button>
+              <button type="button" onclick="togglePinHint()" class="h-12 rounded-2xl glass-panel text-xs font-semibold text-theme-accent hover:scale-105 transition-transform">Hint</button>
+              <button type="button" onclick="enterPinDigit('0')" class="h-12 rounded-2xl glass-panel text-lg font-semibold hover:scale-105 active:scale-95 transition-transform">0</button>
+              <button type="button" onclick="backspacePin()" class="h-12 rounded-2xl glass-panel text-base font-semibold hover:scale-105 active:scale-95 transition-transform">⌫</button>
+            </div>
+            <p id="pin-hint-box" class="hidden text-xs italic text-theme-muted bg-black/20 rounded-xl px-3 py-2"></p>
+          </div>
+        </div>
+
+        <!-- Luxury Wax-Sealed Envelope View -->
+        <div id="envelope-view" class="w-full max-w-lg mx-auto flex flex-col items-center text-center space-y-3.5 sm:space-y-4">
+          <div id="cover-countdown-badge" class="glass-panel rounded-full px-4 py-1.5 text-xs font-semibold flex items-center gap-2 shadow-sm">
+            <span>⏳</span>
+            <span id="cover-countdown-text">Loading countdown...</span>
+          </div>
+
+          <!-- Cover Photo Medallion (shows automatically when a photo URL or upload is set) -->
+          <div id="cover-photo-medallion" class="hidden w-16 h-16 sm:w-20 sm:h-20 rounded-full p-1 shadow-xl" style="background: var(--btn-grad);">
+            <img id="cover-photo-img" src="" alt="Birthday Cover Memory" referrerpolicy="no-referrer" class="w-full h-full rounded-full object-cover bg-black/30" />
+          </div>
+
+          <div class="space-y-1">
+            <p class="text-[11px] sm:text-xs uppercase tracking-[0.26em] font-bold text-theme-accent">
+              A Bespoke Birthday Surprise
+            </p>
+            <h1 class="font-serif text-3xl sm:text-5xl font-bold leading-tight">
+              For <span class="bind-recipient text-theme-accent"></span>
+            </h1>
+            <p class="text-xs sm:text-sm text-theme-muted">
+              Crafted with love by <span class="bind-sender font-semibold"></span> • <span class="bind-bond"></span>
+            </p>
+          </div>
+
+          <div id="luxury-envelope" class="envelope-scene my-1" onclick="openEnvelopeAndProceed()" role="button" tabindex="0" aria-label="Open birthday envelope">
+            <div class="envelope-body">
+              <div class="envelope-inner-card">
+                <span class="text-[10px] uppercase tracking-[0.22em] font-bold opacity-70">You Are Invited To Celebrate</span>
+                <span class="font-serif text-xl font-bold mt-1">Happy Birthday!</span>
+                <span class="font-hand text-2xl mt-0.5 opacity-85 bind-recipient"></span>
+              </div>
+              <div class="envelope-pocket"></div>
+              <div class="envelope-flap"></div>
+              <div class="wax-seal">
+                <span class="text-white text-xl drop-shadow">♥</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="flex flex-col items-center gap-1.5 pt-0.5">
+            <button type="button" onclick="openEnvelopeAndProceed()" class="btn-primary cta-glow px-7 py-3 rounded-full text-sm sm:text-base font-bold flex items-center gap-2">
+              <span>Unseal Your Surprise</span>
+              <span>✨</span>
+            </button>
+            <span class="text-[11px] text-theme-muted">Tap the wax seal • Swipe or use arrows to explore</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==================== PAGE 2: POP THE WISH BALLOONS ==================== -->
+      <section id="story-page-2" class="story-page" data-page="2">
+        <div class="w-full max-w-4xl mx-auto flex flex-col items-center justify-between gap-4 text-center">
+          <div class="space-y-1">
+            <span class="inline-flex items-center gap-1.5 glass-panel px-3 py-1 rounded-full text-[11px] font-bold uppercase tracking-widest text-theme-accent">
+              <span>🎈</span><span>Chapter 1 • Wish Balloons</span>
+            </span>
+            <h2 class="font-serif text-2xl sm:text-4xl font-bold">Pop the Balloons for Your Wishes</h2>
+            <div class="flex items-center justify-center gap-3 text-xs sm:text-sm text-theme-muted">
+              <span id="balloon-counter-label" class="font-semibold text-theme-accent">0 / 6 Balloons Popped</span>
+              <button id="reinflate-btn" type="button" onclick="resetBalloonsStage()" class="hidden underline underline-offset-2 hover:opacity-80">Inflate Again</button>
+            </div>
+          </div>
+
+          <div id="balloons-stage-grid" class="grid grid-cols-2 sm:grid-cols-3 gap-3 sm:gap-5 w-full max-w-3xl py-1"></div>
+
+          <div class="pt-1">
+            <button id="next-to-cake-btn" type="button" onclick="goToStoryPage(3)" class="btn-primary px-6 py-2.5 rounded-full text-sm font-bold flex items-center gap-2">
+              <span>Next: Birthday Cake</span><span>→</span>
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==================== PAGE 3: INTERACTIVE BIRTHDAY CAKE ==================== -->
+      <section id="story-page-3" class="story-page" data-page="3">
+        <div class="w-full max-w-2xl mx-auto flex flex-col items-center text-center space-y-4">
+          <div class="space-y-1">
+            <span class="inline-flex items-center gap-1.5 glass-panel px-3 py-1 rounded-full text-[11px] font-bold uppercase tracking-widest text-theme-accent">
+              <span>🎂</span><span>Chapter 2 • Make a Wish</span>
+            </span>
+            <h2 class="font-serif text-2xl sm:text-4xl font-bold">Blow Out the Candles</h2>
+            <p id="cake-prompt-text" class="text-xs sm:text-sm text-theme-muted">Tap each flame, hold to blow, or use your microphone!</p>
+          </div>
+
+          <div id="cake-wrapper" class="relative w-full max-w-[320px] sm:max-w-[360px] flex items-center justify-center select-none">
+            <svg viewBox="0 0 340 250" class="w-full h-auto overflow-visible" role="img" aria-label="Interactive birthday cake">
+              <defs>
+                <filter id="softGlow" x="-30%" y="-30%" width="160%" height="160%">
+                  <feGaussianBlur stdDeviation="3.5" result="blur" />
+                  <feMerge>
+                    <feMergeNode in="blur" />
+                    <feMergeNode in="SourceGraphic" />
+                  </feMerge>
+                </filter>
+              </defs>
+              <ellipse cx="170" cy="228" rx="122" ry="15" fill="rgba(0,0,0,0.28)" />
+              <rect x="148" y="212" width="44" height="16" rx="6" fill="rgba(255,255,255,0.75)" />
+              <ellipse cx="170" cy="212" rx="126" ry="15" fill="#ffffff" />
+              <ellipse cx="170" cy="210" rx="112" ry="10" fill="rgba(0,0,0,0.06)" />
+
+              <rect x="64" y="142" width="212" height="66" rx="18" style="fill: var(--cake-base);" />
+              <path d="M64 156 Q86 172 108 156 T152 156 T196 156 T240 156 T276 156 L276 146 Q276 138 264 138 L76 138 Q64 138 64 146 Z" style="fill: var(--cake-icing);" />
+              <g fill="#ffffff" opacity="0.88">
+                <circle cx="82" cy="204" r="4" /><circle cx="102" cy="206" r="4" /><circle cx="122" cy="207" r="4" />
+                <circle cx="142" cy="208" r="4" /><circle cx="162" cy="208" r="4" /><circle cx="182" cy="208" r="4" />
+                <circle cx="202" cy="207" r="4" /><circle cx="222" cy="206" r="4" /><circle cx="242" cy="204" r="4" /><circle cx="260" cy="202" r="4" />
+              </g>
+
+              <rect x="92" y="92" width="156" height="50" rx="14" style="fill: var(--cake-top);" />
+              <path d="M92 104 Q110 118 128 104 T164 104 T200 104 T236 104 L248 104 L248 96 Q248 88 238 88 L102 88 Q92 88 92 96 Z" style="fill: var(--cake-icing);" />
+              <path d="M108 105 v10 a4 4 0 0 0 8 0 v-8 M152 107 v14 a4 4 0 0 0 8 0 v-12 M198 106 v11 a4 4 0 0 0 8 0 v-9 M228 104 v9 a4 4 0 0 0 8 0 v-8" stroke-linecap="round" style="fill: var(--cake-drip);" />
+
+              <g opacity="0.92">
+                <rect x="92" y="172" width="9" height="3.5" rx="1.7" transform="rotate(-20 92 172)" fill="#fde047" />
+                <rect x="132" y="182" width="9" height="3.5" rx="1.7" transform="rotate(24 132 182)" fill="#bae6fd" />
+                <rect x="176" y="176" width="9" height="3.5" rx="1.7" transform="rotate(-14 176 176)" fill="#f9a8d4" />
+                <rect x="218" y="184" width="9" height="3.5" rx="1.7" transform="rotate(30 218 184)" fill="#fde047" />
+                <rect x="122" y="124" width="8" height="3" rx="1.5" transform="rotate(18 122 124)" fill="#fef08a" />
+                <rect x="174" y="128" width="8" height="3" rx="1.5" transform="rotate(-24 174 128)" fill="#a5f3fc" />
+                <rect x="210" y="122" width="8" height="3" rx="1.5" transform="rotate(12 210 122)" fill="#fbcfe8" />
+              </g>
+
+              <g class="cake-slice-group">
+                <path d="M236 142 L276 142 L276 196 Q276 208 262 208 L236 208 Z" style="fill: var(--cake-base);" opacity="0.96" />
+                <path d="M236 142 L276 142 L276 154 L236 154 Z" style="fill: var(--cake-icing);" />
+                <line x1="236" y1="168" x2="275" y2="168" stroke="rgba(255,255,255,0.65)" stroke-width="4" />
+                <line x1="236" y1="186" x2="275" y2="186" stroke="rgba(255,255,255,0.45)" stroke-width="3" />
+              </g>
+
+              <g id="cake-candles-layer"></g>
+            </svg>
+          </div>
+
+          <div class="w-full max-w-xs h-2 rounded-full overflow-hidden glass-panel">
+            <div id="blow-meter-bar" class="h-full w-0 rounded-full transition-all duration-150" style="background: var(--btn-grad);"></div>
+          </div>
+
+          <div id="cake-controls-blowing" class="flex flex-wrap items-center justify-center gap-2.5">
+            <button type="button"
+              onmousedown="startHoldBlow()" onmouseup="stopHoldBlow()" onmouseleave="stopHoldBlow()"
+              ontouchstart="startHoldBlow(event)" ontouchend="stopHoldBlow()" ontouchcancel="stopHoldBlow()"
+              class="btn-primary px-5 py-2.5 rounded-full text-sm font-bold flex items-center gap-2 select-none">
+              <span>🌬️</span><span>Hold to Blow</span>
+            </button>
+            <button id="mic-blow-btn" type="button" onclick="toggleMicBlow()" class="glass-panel px-4 py-2.5 rounded-full text-xs sm:text-sm font-semibold hover:scale-105 transition-transform">
+              🎤 Mic Blow
+            </button>
+            <button type="button" onclick="blowAllCandles()" class="glass-panel px-4 py-2.5 rounded-full text-xs sm:text-sm font-semibold hover:scale-105 transition-transform">
+              Blow All
+            </button>
+          </div>
+
+          <div id="cake-controls-after-blow" class="hidden flex flex-wrap items-center justify-center gap-2.5">
+            <button id="cut-cake-btn" type="button" onclick="cutTheCake()" class="btn-primary cta-glow px-6 py-2.5 rounded-full text-sm font-bold flex items-center gap-2">
+              <span>Cut the Cake</span><span>🍰</span>
+            </button>
+            <button id="next-to-letter-btn" type="button" onclick="goToStoryPage(4)" class="hidden btn-primary px-6 py-2.5 rounded-full text-sm font-bold flex items-center gap-2">
+              <span>Next: Read Your Letter</span><span>→</span>
+            </button>
+            <button type="button" onclick="resetCakeStage()" class="glass-panel px-4 py-2.5 rounded-full text-xs font-semibold hover:scale-105 transition-transform">
+              Relight
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==================== PAGE 4: LARGE FULL BIRTHDAY LETTER ==================== -->
+      <section id="story-page-4" class="story-page" data-page="4">
+        <div class="w-full max-w-3xl mx-auto flex flex-col items-center space-y-4">
+          <div class="stationery-paper letter-scroll relative w-full rounded-3xl p-6 sm:p-10 max-h-[72dvh] overflow-y-auto">
+            <div class="pointer-events-none absolute top-3 left-3 w-7 h-7 border-t-2 border-l-2 rounded-tl-lg" style="border-color: var(--paper-border);"></div>
+            <div class="pointer-events-none absolute top-3 right-3 w-7 h-7 border-t-2 border-r-2 rounded-tr-lg" style="border-color: var(--paper-border);"></div>
+            <div class="pointer-events-none absolute bottom-3 left-3 w-7 h-7 border-b-2 border-l-2 rounded-bl-lg" style="border-color: var(--paper-border);"></div>
+            <div class="pointer-events-none absolute bottom-3 right-3 w-7 h-7 border-b-2 border-r-2 rounded-br-lg" style="border-color: var(--paper-border);"></div>
+
+            <div class="space-y-4">
+              <div class="flex flex-wrap items-center justify-between gap-2 pb-3 border-b" style="border-color: var(--paper-border);">
+                <span id="letter-bond-pill" class="px-3 py-1 rounded-full text-[11px] font-bold uppercase tracking-widest" style="background: rgba(190, 18, 60, 0.1); color: var(--paper-ink);"></span>
+                <span id="letter-date-label" class="text-xs font-medium" style="color: var(--paper-muted);"></span>
+              </div>
+
+              <h2 id="letter-heading" class="font-serif text-2xl sm:text-3xl font-bold leading-snug break-words"></h2>
+              <p class="font-serif italic text-base sm:text-lg" style="color: var(--paper-muted);">
+                Dearest <span class="bind-recipient font-semibold"></span>,
+              </p>
+              <div id="letter-body-display" class="font-serif text-[15px] sm:text-[17px] leading-[1.9] whitespace-pre-line break-words"></div>
+
+              <div class="pt-4 border-t flex items-end justify-between" style="border-color: var(--paper-border);">
+                <div>
+                  <div class="text-xs uppercase tracking-widest" style="color: var(--paper-muted);">Always cheering for you,</div>
+                  <div class="font-hand text-3xl sm:text-4xl font-bold mt-0.5 bind-sender"></div>
+                </div>
+                <div class="text-2xl opacity-80">💌</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="flex items-center justify-center gap-3">
+            <button type="button" onclick="goToStoryPage(3)" class="glass-panel px-4 py-2 rounded-full text-xs sm:text-sm font-semibold">← Cake</button>
+            <button type="button" onclick="goToStoryPage(5)" class="btn-primary px-6 py-2.5 rounded-full text-sm font-bold flex items-center gap-2">
+              <span>Next: Photo Memories</span><span>→</span>
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==================== PAGE 5: POLAROID MEMORY DECK ==================== -->
+      <section id="story-page-5" class="story-page" data-page="5">
+        <div class="w-full max-w-3xl mx-auto flex flex-col items-center text-center space-y-3.5">
+          <div class="space-y-1">
+            <span class="inline-flex items-center gap-1.5 glass-panel px-3 py-1 rounded-full text-[11px] font-bold uppercase tracking-widest text-theme-accent">
+              <span>📸</span><span>Chapter 4 • Memory Deck</span>
+            </span>
+            <h2 class="font-serif text-2xl sm:text-4xl font-bold">Moments Worth Keeping</h2>
+            <p class="text-xs sm:text-sm text-theme-muted">
+              Tap the Polaroid or thumbnails below to browse (<span id="polaroid-counter" class="font-semibold text-theme-accent">1 / 5</span>)
+            </p>
+          </div>
+
+          <div class="flex items-center justify-center gap-4 sm:gap-8 w-full">
+            <button type="button" onclick="cyclePolaroid(-1)" aria-label="Previous photo" class="hidden sm:flex w-11 h-11 rounded-full glass-panel items-center justify-center text-lg hover:scale-110 transition-transform">←</button>
+            <div id="polaroid-stack-container" class="polaroid-deck"></div>
+            <button type="button" onclick="cyclePolaroid(1)" aria-label="Next photo" class="hidden sm:flex w-11 h-11 rounded-full glass-panel items-center justify-center text-lg hover:scale-110 transition-transform">→</button>
+          </div>
+
+          <!-- Clickable Photo Thumbnail Strip -->
+          <div id="polaroid-thumb-strip" class="flex items-center justify-center gap-2 py-0.5"></div>
+
+          <div class="flex flex-wrap items-center justify-center gap-2.5">
+            <button type="button" onclick="cyclePolaroid(-1)" class="sm:hidden glass-panel px-4 py-2 rounded-full text-xs font-semibold">← Prev</button>
+            <button type="button" onclick="cyclePolaroid(1)" class="sm:hidden glass-panel px-4 py-2 rounded-full text-xs font-semibold">Next →</button>
+            <button type="button" onclick="goToStoryPage(6)" class="btn-primary px-6 py-2.5 rounded-full text-sm font-bold flex items-center gap-2">
+              <span>Grand Finale</span><span>🎆</span>
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==================== PAGE 6: GRAND FINALE & SEPARATE MESSAGE ==================== -->
+      <section id="story-page-6" class="story-page" data-page="6">
+        <div class="w-full max-w-2xl mx-auto flex flex-col items-center text-center space-y-5">
+          <div class="space-y-1.5">
+            <p class="text-[11px] sm:text-xs uppercase tracking-[0.28em] font-bold text-theme-accent">✨ Celebration Finale ✨</p>
+            <h2 class="font-serif text-3xl sm:text-5xl font-bold leading-tight">
+              Happy Birthday, <span class="bind-recipient text-theme-accent"></span>!
+            </h2>
+            <p class="text-xs sm:text-sm text-theme-muted">May the year ahead sparkle even brighter than tonight’s fireworks.</p>
+          </div>
+
+          <div class="glass-strong rounded-3xl p-5 sm:p-7 w-full max-w-xl text-left shadow-2xl">
+            <div class="flex items-start justify-between gap-3 border-b pb-3.5" style="border-color: var(--surface-border);">
+              <div>
+                <div class="text-[10px] uppercase tracking-[0.22em] font-bold text-theme-accent">Grand Finale Keepsake Note</div>
+                <div class="font-serif text-xl sm:text-2xl font-bold mt-0.5">Celebrating <span class="bind-recipient"></span></div>
+              </div>
+              <div class="w-10 h-10 rounded-2xl glass-panel flex items-center justify-center text-lg shrink-0">🎂</div>
+            </div>
+            <div id="keepsake-quote-excerpt" class="letter-scroll font-serif italic text-sm sm:text-[15px] leading-relaxed py-4 max-h-[34dvh] overflow-y-auto whitespace-pre-line break-words"></div>
+            <div class="flex flex-wrap items-center justify-between gap-2 pt-3 border-t text-xs" style="border-color: var(--surface-border);">
+              <div>
+                <span class="text-theme-muted">From </span>
+                <span class="font-hand text-xl font-bold text-theme-accent bind-sender"></span>
+                <span class="text-theme-muted"> • <span class="bind-bond"></span></span>
+              </div>
+              <span id="keepsake-date-pill" class="glass-panel px-2.5 py-1 rounded-full text-[11px] font-semibold"></span>
+            </div>
+          </div>
+
+          <div class="no-print flex flex-wrap items-center justify-center gap-2.5">
+            <button type="button" onclick="downloadKeepsakePng()" class="btn-primary px-5 py-2.5 rounded-full text-xs sm:text-sm font-bold">⬇ Download Keepsake</button>
+            <button type="button" onclick="window.print()" class="glass-panel px-4 py-2.5 rounded-full text-xs sm:text-sm font-semibold">🖨️ Print</button>
+            <button type="button" onclick="replayFullSurprise()" class="glass-panel px-4 py-2.5 rounded-full text-xs sm:text-sm font-semibold">↺ Replay</button>
+            <button type="button" onclick="exitRecipientMode()" class="creator-only-btn glass-panel px-4 py-2.5 rounded-full text-xs sm:text-sm font-semibold text-theme-accent">✨ Customize &amp; QR</button>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- Bottom Navigation Bar -->
+    <nav id="story-bottom-nav" aria-label="Birthday story navigation" class="fixed bottom-3 left-1/2 -translate-x-1/2 z-40 w-[min(94vw,520px)]">
+      <div class="glass-strong rounded-full px-3 py-2 shadow-xl flex items-center justify-between gap-2">
+        <button id="story-prev-btn" type="button" onclick="stepStoryPage(-1)" class="px-3.5 py-1.5 rounded-full glass-panel text-xs font-semibold flex items-center gap-1 disabled:opacity-35">
+          <span>←</span><span class="hidden sm:inline">Back</span>
+        </button>
+        <div class="flex flex-col items-center gap-1">
+          <div id="story-page-dots" class="flex items-center gap-2"></div>
+          <span id="story-page-caption" class="text-[10px] font-semibold uppercase tracking-widest text-theme-muted">Page 1 of 6 • Cover</span>
+        </div>
+        <button id="story-next-btn" type="button" onclick="stepStoryPage(1)" class="px-3.5 py-1.5 rounded-full btn-primary text-xs font-bold flex items-center gap-1 disabled:opacity-35">
+          <span class="hidden sm:inline">Next</span><span>→</span>
+        </button>
+      </div>
+    </nav>
+  </div>
+
+  <!-- =========================================================================
+       VIEW 2: CREATOR STUDIO (SEPARATE PAGE — NEVER STACKED WITH EXPERIENCE)
+       ========================================================================= -->
+  <div id="studio-view" hidden class="hidden relative z-10 w-full min-h-screen pt-20 pb-20 px-4">
+    <div class="max-w-4xl mx-auto space-y-6">
+
+      <!-- Studio Intro Banner -->
+      <div class="studio-card rounded-3xl p-5 sm:p-7 flex flex-wrap items-center justify-between gap-4">
+        <div class="space-y-1">
+          <p class="text-[11px] font-bold uppercase tracking-[0.24em] text-theme-accent">Creator Studio • Personalize &amp; Share</p>
+          <h1 class="font-serif text-2xl sm:text-3xl font-bold">Craft Your Bespoke Birthday Surprise</h1>
+          <p class="text-xs sm:text-sm text-theme-muted max-w-xl">
+            Customize details, pick a luxury palette &amp; unique song, paste your image addresses, then click <strong>Submit &amp; Save Birthday Details</strong> at the bottom to reveal your personal link &amp; real scannable QR code.
+          </p>
+        </div>
+        <button type="button" onclick="previewFromStudio()" class="btn-primary px-5 py-2.5 rounded-full text-xs sm:text-sm font-bold shrink-0">
+          👁️ Live Preview
+        </button>
+      </div>
+
+      <!-- SECTION 01: AESTHETIC COLOR PALETTE -->
+      <section class="studio-card rounded-3xl p-5 sm:p-6 space-y-4">
+        <div>
+          <p class="text-[11px] font-bold uppercase tracking-widest text-theme-accent">01 • Aesthetic Color Palette</p>
+          <h2 class="font-serif text-xl font-bold">Choose Your Visual Mood</h2>
+        </div>
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+          <button type="button" data-theme-pick="celestial" onclick="selectStudioTheme('celestial')" class="theme-pick-btn p-3 rounded-2xl text-left border-2 transition-all bg-[#140d33] text-[#fbf8ff]">
+            <div class="h-9 rounded-xl mb-2 bg-gradient-to-r from-indigo-700 via-fuchsia-500 to-amber-300"></div>
+            <div class="text-xs font-bold">Celestial Velvet</div>
+            <div class="text-[10px] opacity-75">Indigo, Orchid &amp; Gold</div>
+          </button>
+          <button type="button" data-theme-pick="blush" onclick="selectStudioTheme('blush')" class="theme-pick-btn p-3 rounded-2xl text-left border-2 transition-all bg-[#fff4f6] text-[#38101d]">
+            <div class="h-9 rounded-xl mb-2 bg-gradient-to-r from-rose-200 via-rose-400 to-rose-700"></div>
+            <div class="text-xs font-bold">Blush Champagne</div>
+            <div class="text-[10px] opacity-75">Silk Ivory &amp; Rose</div>
+          </button>
+          <button type="button" data-theme-pick="aurora" onclick="selectStudioTheme('aurora')" class="theme-pick-btn p-3 rounded-2xl text-left border-2 transition-all bg-[#092629] text-[#f0fdfa]">
+            <div class="h-9 rounded-xl mb-2 bg-gradient-to-r from-teal-700 via-teal-300 to-purple-400"></div>
+            <div class="text-xs font-bold">Aurora Borealis</div>
+            <div class="text-[10px] opacity-75">Teal, Mint &amp; Lilac</div>
+          </button>
+          <button type="button" data-theme-pick="terracotta" onclick="selectStudioTheme('terracotta')" class="theme-pick-btn p-3 rounded-2xl text-left border-2 transition-all bg-[#2b1224] text-[#fff7f0]">
+            <div class="h-9 rounded-xl mb-2 bg-gradient-to-r from-rose-600 via-orange-400 to-amber-200"></div>
+            <div class="text-xs font-bold">Sunset Terracotta</div>
+            <div class="text-[10px] opacity-75">Plum, Coral &amp; Honey</div>
+          </button>
+        </div>
+      </section>
+
+      <!-- SECTION 02: PERSONAL DETAILS, BOND, UNIQUE SONG & PASSCODE -->
+      <section class="studio-card rounded-3xl p-5 sm:p-6 space-y-5">
+        <div>
+          <p class="text-[11px] font-bold uppercase tracking-widest text-theme-accent">02 • Personal Details &amp; Soundtrack</p>
+          <h2 class="font-serif text-xl font-bold">Who Are We Celebrating?</h2>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <label for="s-recipient" class="block text-xs font-semibold text-theme-muted mb-1.5">Birthday Person’s Name</label>
+            <input id="s-recipient" type="text" maxlength="40" oninput="syncStudioInputs()" class="studio-input w-full px-3.5 py-2.5 rounded-xl text-sm" placeholder="Enter birthday person's name" />
+          </div>
+          <div>
+            <label for="s-sender" class="block text-xs font-semibold text-theme-muted mb-1.5">Your Name (From)</label>
+            <input id="s-sender" type="text" maxlength="40" oninput="syncStudioInputs()" class="studio-input w-full px-3.5 py-2.5 rounded-xl text-sm" placeholder="Enter your name" />
+          </div>
+        </div>
+
+        <!-- Relationship / Bond Pills (Includes Girlfriend, Lover, Wife & more) -->
+        <div>
+          <span class="block text-xs font-semibold text-theme-muted mb-2">Relationship / Bond</span>
+          <div id="studio-bond-pills" class="flex flex-wrap gap-2"></div>
+        </div>
+
+        <!-- Unique Synthesized Birthday Songs -->
+        <div class="space-y-2.5">
+          <div class="flex flex-wrap items-center justify-between gap-2">
+            <div>
+              <span class="block text-xs font-semibold text-theme-muted">Unique Birthday Soundtrack (6 Original Compositions)</span>
+              <span class="text-[11px] text-theme-muted opacity-80">Tap any melody and preview live — plays cleanly offline with zero external audio URLs.</span>
+            </div>
+            <button id="preview-song-btn" type="button" onclick="toggleStudioSongPreview()" class="glass-panel px-3.5 py-1.5 rounded-full text-xs font-bold text-theme-accent hover:scale-105 transition-transform">
+              ▶ Preview Song
+            </button>
+          </div>
+          <div id="studio-songs-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2.5"></div>
+        </div>
+
+        <!-- Date, Countdown & Music Toggles -->
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3.5 items-end">
+          <div>
+            <label for="s-date" class="block text-xs font-semibold text-theme-muted mb-1.5">Birthday Date</label>
+            <input id="s-date" type="date" onchange="syncStudioInputs()" class="studio-input w-full px-3.5 py-2.5 rounded-xl text-sm" />
+          </div>
+          <label class="flex items-center justify-between gap-3 px-3.5 py-2.5 rounded-xl glass-panel cursor-pointer">
+            <span class="text-xs font-semibold">Show Countdown</span>
+            <input id="s-countdown" type="checkbox" onchange="syncStudioInputs()" class="w-4 h-4 accent-amber-400 cursor-pointer" />
+          </label>
+          <label class="flex items-center justify-between gap-3 px-3.5 py-2.5 rounded-xl glass-panel cursor-pointer">
+            <span class="text-xs font-semibold">Play Soundtrack</span>
+            <input id="s-music" type="checkbox" onchange="syncStudioInputs()" class="w-4 h-4 accent-amber-400 cursor-pointer" />
+          </label>
+        </div>
+
+        <!-- Optional 4-Digit Passcode Lock -->
+        <div class="glass-panel rounded-2xl p-4 space-y-3">
+          <label class="flex items-center justify-between gap-3 cursor-pointer">
+            <div>
+              <div class="text-xs font-bold">🔐 Optional 4-Digit Passcode Lock</div>
+              <div class="text-[11px] text-theme-muted">Add a secret PIN before opening the wax-sealed envelope</div>
+            </div>
+            <input id="s-lock-enabled" type="checkbox" onchange="toggleStudioLock()" class="w-4 h-4 accent-amber-400 cursor-pointer" />
+          </label>
+          <div id="s-lock-fields" class="hidden grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
+            <div>
+              <label for="s-passcode" class="block text-xs font-semibold text-theme-muted mb-1">4-Digit PIN</label>
+              <input id="s-passcode" type="text" inputmode="numeric" maxlength="4" oninput="sanitizeStudioPin()" class="studio-input w-full px-3.5 py-2 rounded-xl text-sm font-mono tracking-[0.35em]" placeholder="1225" />
+            </div>
+            <div>
+              <label for="s-hint" class="block text-xs font-semibold text-theme-muted mb-1">Passcode Hint</label>
+              <input id="s-hint" type="text" maxlength="60" oninput="syncStudioInputs()" class="studio-input w-full px-3.5 py-2 rounded-xl text-sm" placeholder="e.g., Our anniversary MMDD" />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SECTION 03: LARGE BIRTHDAY MESSAGE, SEPARATE GRAND FINALE MESSAGE & 6 WISHES -->
+      <section class="studio-card rounded-3xl p-5 sm:p-6 space-y-5">
+        <div class="flex flex-wrap items-center justify-between gap-2">
+          <div>
+            <p class="text-[11px] font-bold uppercase tracking-widest text-theme-accent">03 • Letter, Grand Finale &amp; Wishes</p>
+            <h2 class="font-serif text-xl font-bold">Write From the Heart</h2>
+          </div>
+          <button type="button" onclick="autofillForBond()" class="glass-panel px-3.5 py-1.5 rounded-full text-xs font-bold text-theme-accent hover:scale-105 transition-transform">
+            ✨ Auto-fill for Bond
+          </button>
+        </div>
+
+        <div class="space-y-4">
+          <div>
+            <label for="s-letter-title" class="block text-xs font-semibold text-theme-muted mb-1.5">Letter Heading (Page 4)</label>
+            <input id="s-letter-title" type="text" maxlength="90" oninput="syncStudioInputs()" class="studio-input w-full px-3.5 py-2.5 rounded-xl text-sm" placeholder="To Another Magical Year" />
+          </div>
+
+          <div>
+            <div class="flex items-center justify-between mb-1.5">
+              <label for="s-letter-body" class="text-xs font-semibold text-theme-muted">Full Birthday Message (Page 4 Letter — Supports Long Messages)</label>
+              <span id="letter-char-count" class="text-[11px] text-theme-muted">0 / 5000</span>
+            </div>
+            <textarea id="s-letter-body" rows="9" maxlength="5000" oninput="syncStudioInputs()" class="studio-input w-full px-3.5 py-3 rounded-xl text-sm leading-relaxed" placeholder="Write your full, heartfelt birthday letter here..."></textarea>
+          </div>
+
+          <!-- Separate Grand Finale Message Box -->
+          <div class="glass-panel rounded-2xl p-4 space-y-2">
+            <div class="flex items-center justify-between">
+              <label for="s-finale-message" class="text-xs font-bold text-theme-accent">🎆 Separate Grand Finale Message (Page 6 Keepsake &amp; PNG Card)</label>
+              <span id="finale-char-count" class="text-[11px] text-theme-muted">0 / 1500</span>
+            </div>
+            <textarea id="s-finale-message" rows="4" maxlength="1500" oninput="syncStudioInputs()" class="studio-input w-full px-3.5 py-2.5 rounded-xl text-sm leading-relaxed" placeholder="Write a distinct closing toast or finale blessing for the Fireworks page..."></textarea>
+          </div>
+
+          <!-- 6 Balloon Wishes -->
+          <div class="space-y-2">
+            <span class="block text-xs font-semibold text-theme-muted">6 Floating Balloon Wishes (Page 2)</span>
+            <div id="studio-wishes-grid" class="grid grid-cols-1 sm:grid-cols-2 gap-2.5"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SECTION 04: PHOTO POLAROIDS (PASTED IMAGE ADDRESSES SAVED AS DEFAULTS) -->
+      <section class="studio-card rounded-3xl p-5 sm:p-6 space-y-4">
+        <div class="flex flex-wrap items-center justify-between gap-2">
+          <div>
+            <p class="text-[11px] font-bold uppercase tracking-widest text-theme-accent">04 • Photo Polaroids (Image Address URLs or Uploads)</p>
+            <h2 class="font-serif text-xl font-bold">Memories Deck (<span id="studio-photo-count">5</span> / 5)</h2>
+          </div>
+          <div class="flex flex-wrap items-center gap-2">
+            <button type="button" onclick="savePastedPhotosAsDefault(true)" class="glass-panel px-3.5 py-2 rounded-full text-xs font-bold text-emerald-300 hover:scale-105 transition-transform">
+              ⭐ Save as Default Photos
+            </button>
+            <button id="studio-add-photo-btn" type="button" onclick="addStudioPhotoSlot()" class="glass-panel px-3.5 py-2 rounded-full text-xs font-bold text-theme-accent hover:scale-105 transition-transform">
+              + Add Photo Slot
+            </button>
+            <label class="btn-primary px-4 py-2 rounded-full text-xs font-bold cursor-pointer flex items-center gap-1.5">
+              <span>+ Upload File</span>
+              <input type="file" accept="image/*" multiple onchange="handleStudioPhotoUpload(event)" class="hidden" />
+            </label>
+          </div>
+        </div>
+        <p class="text-xs text-theme-muted leading-relaxed">
+          Right-click any photo online → <strong>Copy image address</strong> and paste it below (also supports <strong>Google Drive</strong> public links, <strong>GitHub</strong> raw links, <strong>Imgur</strong>, <strong>Dropbox</strong>, or <code>photo1.jpg</code> in your GitHub repo). Pasted image links are <strong>automatically saved as your website’s default photos</strong> and embedded in your shared birthday link!
+        </p>
+        <div id="studio-photos-list" class="space-y-3"></div>
+      </section>
+
+      <!-- SECTION 05: HOST URL, SUBMIT BUTTON & QR / SHARE STUDIO -->
+      <section class="studio-card rounded-3xl p-5 sm:p-6 space-y-5">
+        <div>
+          <p class="text-[11px] font-bold uppercase tracking-widest text-theme-accent">05 • Save, GitHub Hosting &amp; Real Scannable QR</p>
+          <h2 class="font-serif text-xl font-bold">Submit &amp; Generate Your Personal Link</h2>
+        </div>
+
+        <div>
+          <label for="s-host-url" class="block text-xs font-semibold text-theme-muted mb-1.5">Your Hosted GitHub Pages Website URL</label>
+          <input id="s-host-url" type="url" oninput="syncStudioHostUrl()" class="studio-input w-full px-3.5 py-2.5 rounded-xl text-sm font-mono" placeholder="https://yourusername.github.io/birthday-surprise/" />
+          <p class="text-[11px] text-theme-muted mt-1.5">
+            Automatically detects your live website URL when hosted on GitHub Pages. Must start with <code>https://</code> so phone cameras redirect smoothly when scanning the QR code.
+          </p>
+        </div>
+
+        <!-- Primary Submit & Save Button -->
+        <div class="pt-1 flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+          <button id="submit-save-btn" type="button" onclick="submitAndSaveDetails()" class="btn-primary cta-glow flex-1 py-3.5 px-6 rounded-2xl text-sm sm:text-base font-bold flex items-center justify-center gap-2">
+            <span>✨ Submit &amp; Save Birthday Details</span>
+          </button>
+          <span id="studio-unsaved-badge" class="hidden px-3.5 py-2 rounded-full text-xs font-bold bg-amber-500/20 text-amber-300 border border-amber-400/40 text-center">
+            ⚠️ Unsaved edits — click Submit
+          </span>
+        </div>
+
+        <!-- Revealed ONLY After Clicking Submit & Save -->
+        <div id="saved-share-panel" class="hidden space-y-5 pt-4 border-t" style="border-color: var(--surface-border);">
+          <div class="glass-panel rounded-2xl p-4 flex flex-wrap items-center justify-between gap-3">
+            <div>
+              <div class="text-xs font-bold text-emerald-400">✓ Saved! Ready to Share With <span id="saved-summary-name"></span></div>
+              <div id="saved-summary-meta" class="text-[11px] text-theme-muted mt-0.5"></div>
+            </div>
+            <div id="saved-photos-mini" class="flex items-center gap-1.5"></div>
+          </div>
+
+          <!-- Share Mode Switcher -->
+          <div class="glass-panel rounded-2xl p-2 grid grid-cols-1 sm:grid-cols-2 gap-2">
+            <button id="share-mode-instant-btn" type="button" onclick="setShareMode('instant')" class="py-2.5 px-3 rounded-xl text-xs font-bold transition-all text-center">
+              ⚡ Ready-to-Share Link (Shows Only Their Details)
+            </button>
+            <button id="share-mode-short-btn" type="button" onclick="setShareMode('short')" class="py-2.5 px-3 rounded-xl text-xs font-bold transition-all text-center">
+              ✨ Ultra-Short URL (GitHub Re-Upload)
+            </button>
+          </div>
+          <p id="share-mode-desc" class="text-xs text-theme-muted leading-relaxed"></p>
+
+          <!-- Warning if example placeholder URL is still entered -->
+          <div id="placeholder-url-warning" class="hidden rounded-2xl p-3.5 text-xs bg-amber-500/15 border border-amber-400/40 text-amber-200">
+            ⚠️ You are currently using the example URL (<code>yourusername.github.io</code>). Replace it above with your real GitHub Pages URL so scanning the QR code opens your live site!
+          </div>
+
+          <!-- Shareable URL + Copy + WhatsApp -->
+          <div class="space-y-2.5">
+            <div class="flex items-center justify-between text-xs">
+              <span class="font-semibold text-theme-muted">Your Personal Birthday Link</span>
+              <span id="share-link-length" class="text-[11px] font-mono text-theme-accent"></span>
+            </div>
+            <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-2">
+              <input id="share-link-field" type="text" readonly onclick="this.select()" class="studio-input flex-1 px-3.5 py-2.5 rounded-xl text-xs font-mono cursor-text" />
+              <div class="flex items-center gap-2">
+                <button id="copy-link-btn" type="button" onclick="copyShareUrl()" class="btn-primary px-5 py-2.5 rounded-xl text-xs font-bold flex-1 sm:flex-none">
+                  📋 Copy Link
+                </button>
+                <button type="button" onclick="shareViaWhatsApp()" class="glass-panel px-4 py-2.5 rounded-xl text-xs font-bold flex-1 sm:flex-none" style="border-color: rgba(34, 197, 94, 0.45);">
+                  💬 WhatsApp
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Real Scannable ISO/IEC 18004 QR Code & GitHub Export -->
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 items-center">
+            <div class="glass-panel rounded-2xl p-4 flex flex-col items-center text-center space-y-2.5">
+              <div class="bg-white p-3 rounded-2xl shadow-lg">
+                <canvas id="studio-qr-canvas" width="240" height="240" class="w-48 h-48 block" aria-label="Real scannable QR code"></canvas>
+              </div>
+              <a id="qr-test-link" href="#" target="_blank" rel="noopener noreferrer" class="text-[11px] font-mono text-theme-accent underline break-all max-w-full">
+                Test QR destination ↗
+              </a>
+              <button type="button" onclick="downloadQrCardPng()" class="btn-primary w-full py-2.5 rounded-xl text-xs font-bold">
+                ⬇ Download Printable QR Gift Card (PNG)
+              </button>
+            </div>
+
+            <div class="glass-panel rounded-2xl p-4 space-y-3">
+              <div class="text-xs font-bold text-theme-accent">🚀 Ultra-Short GitHub Pages Export</div>
+              <p class="text-xs text-theme-muted leading-relaxed">
+                Want an ultra-short link like <code>https://yourname.github.io/bday/</code> with all your details, song, large message, finale note &amp; full-HD photos baked in? Download your personalized <code>index.html</code> and upload it to GitHub!
+              </p>
+              <button type="button" onclick="downloadPersonalizedHtml()" class="btn-primary w-full py-2.5 px-4 rounded-xl text-xs font-bold">
+                🚀 Download Ready index.html for GitHub
+              </button>
+              <button type="button" onclick="testRecipientViewNow()" class="glass-panel w-full py-2.5 px-4 rounded-xl text-xs font-bold">
+                🎁 Test Exact Birthday Person View
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <script>
+    /* ==========================================================================
+       0. EDITABLE HOSTING CONFIGURATION (ALSO AUTO-BAKED BY GITHUB EXPORTER)
+       ========================================================================== */
+    const BIRTHDAY_CONFIG = {
+      hostedRecipientMode: false,
+      recipient: "Someone Special",
+      sender: "With Love",
+      bond: "Girlfriend",
+      theme: "celestial",
+      song: "starlight",
+      dateIso: "",
+      showCountdown: true,
+      musicEnabled: true,
+      lockEnabled: false,
+      passcode: "1225",
+      hint: "A special date (MMDD)",
+      letterTitle: "To My Favorite Person in the World",
+      letterBody: "Happy Birthday! Today is all about celebrating your warmth, your laughter, and the quiet magic you bring into every single day.\n\nThank you for every unforgettable memory, every late-night conversation, and every smile you inspire. Wishing you a radiant new year overflowing with joy, adventure, and every dream your heart holds.",
+      finaleMessage: "Here is to a lifetime of bright mornings, starry nights, and unforgettable celebrations together. Happy Birthday once again — you deserve the whole universe and more!",
+      wishes: [
+        "Endless joy & laughter every single day",
+        "Unforgettable adventures around the world",
+        "Soft mornings, warm coffee & bright skies",
+        "Every dream in your heart coming true",
+        "Good health, peace & boundless love",
+        "A year even more magical than the last"
+      ],
+      // Paste your default Image Addresses right into imageUrl below (or paste inside Creator Studio!)
+      memories: [
+        { caption: "Under a sky full of wishes", date: "Favorite Memory", artType: "starlight", imageUrl: "", imageData: null },
+        { caption: "Warm coffee & endless laughs", date: "Sweet Day", artType: "cafe", imageUrl: "", imageData: null },
+        { caption: "Chasing golden hour sunsets", date: "Golden Hour", artType: "sunset", imageUrl: "", imageData: null },
+        { caption: "Sparklers & midnight smiles", date: "Celebration", artType: "sparklers", imageUrl: "", imageData: null },
+        { caption: "Soaring into a brand new chapter", date: "Happy Birthday ✨", artType: "balloons", imageUrl: "", imageData: null }
+      ],
+      hostUrl: ""
+    };
+
+    /* ==========================================================================
+       1. CONSTANTS, BONDS, SONGS & STATE
+       ========================================================================== */
+    const THEME_KEYS = ["celestial", "blush", "aurora", "terracotta"];
+    const THEME_LABELS = {
+      celestial: "Celestial Velvet",
+      blush: "Blush Champagne",
+      aurora: "Aurora Borealis",
+      terracotta: "Sunset Terracotta",
+    };
+
+    const BONDS = [
+      "Girlfriend", "Lover", "Wife", "Partner",
+      "Best Friend", "Mom", "Dad", "Sister", "Brother", "Friend", "Colleague"
+    ];
+
+    const STORY_PAGE_NAMES = ["Cover", "Balloons", "Cake", "Letter", "Memories", "Finale"];
+
+    const BIRTHDAY_SONGS = [
+      { id: "starlight", name: "Starlight Music Box", emoji: "✨", desc: "Dreamy crystalline harp & chimes", tempoMs: 560 },
+      { id: "waltz", name: "Midnight Velvet Waltz", emoji: "🌹", desc: "Romantic 3/4 slow dance melody", tempoMs: 520 },
+      { id: "lofi", name: "Cozy Lo-Fi Candles", emoji: "🕯️", desc: "Warm jazzy electric-piano chords", tempoMs: 640 },
+      { id: "party", name: "Golden Party Groove", emoji: "🎉", desc: "Upbeat xylophone & bright bells", tempoMs: 360 },
+      { id: "classic", name: "Classic Birthday Chimes", emoji: "🎂", desc: "Gentle celesta Happy Birthday loop", tempoMs: 460 },
+      { id: "serenade", name: "Sunset Acoustic Serenade", emoji: "🌅", desc: "Plucked warm strings in G major", tempoMs: 490 },
+    ];
+
+    const BOND_PRESETS = {
+      Girlfriend: {
+        title: "Happy Birthday to My Beautiful Girlfriend",
+        body: "Happy Birthday, my love! From the moment you walked into my life, ordinary days turned into my favorite memories.\n\nI adore the way your eyes light up when you laugh, the kindness you carry effortlessly, and how simply being beside you feels like home. Thank you for filling my world with warmth, adventure, and endless smiles.\n\nMay this new year bring you everything you have ever wished for—and let me be right beside you cheering for every single moment.",
+        finale: "You are my favorite notification, my happiest place, and my greatest blessing. Happy Birthday, sweetheart — here’s to countless more birthdays together! ❤️",
+      },
+      Lover: {
+        title: "To My Soulmate & Forever Love",
+        body: "Happy Birthday, my darling! Loving you is the easiest and most extraordinary thing I have ever done.\n\nEvery stolen glance, late-night talk, and shared dream with you reminds me how lucky I am to walk through life hand in hand with you. You inspire me to be softer, braver, and endlessly grateful.\n\nTonight, make the biggest wish your heart can hold—because you deserve a lifetime of magic.",
+        finale: "In every lifetime, in every universe, I would still choose you. Happy Birthday, my love — tonight and always, my heart is yours. 🌹",
+      },
+      Wife: {
+        title: "Happy Birthday to My Wonderful Wife",
+        body: "Happy Birthday, my love! Thank you for being my partner in every adventure, my calm in every storm, and the radiant heart of our home.\n\nWatching us build this life together has been my greatest joy. Your grace, laughter, and boundless love make every year richer than the last.\n\nToday is all about spoiling you, celebrating every bit of who you are, and toasting to all the beautiful chapters still ahead of us.",
+        finale: "Growing through life beside you is my favorite story. Happy Birthday to my forever love and amazing wife! 💍✨",
+      },
+      Partner: {
+        title: "Happy Birthday, My Favorite Person",
+        body: "Every day beside you feels like a gift, and today is all about celebrating the extraordinary person you are.\n\nThank you for filling my world with laughter, patience, and joy. Here is to endless sunsets, cozy mornings, and a lifetime of birthdays together.",
+        finale: "Cheers to us, to your dreams, and to an unforgettable new chapter ahead. Happy Birthday! ✨",
+      },
+      "Best Friend": {
+        title: "To My Ride-or-Die & Favorite Human",
+        body: "Another trip around the sun and somehow you keep getting funnier, kinder, and even more iconic every single year!\n\nThank you for the midnight talks, the uncontrollable laughs, and for always having my back. Life is infinitely brighter with you in it.\n\nWishing you bold adventures, big wins, and every single dream on your list.",
+        finale: "So grateful for every laugh and memory we share. Have the most legendary birthday ever! 🥂✨",
+      },
+      Mom: {
+        title: "Celebrating the Heart of Our Home",
+        body: "Happy Birthday, Mom! No words could ever capture how deeply grateful I am for your unconditional love, wisdom, and warmth.\n\nYou have turned ordinary days into treasured memories and shown us what grace looks like. Today, sit back and let us celebrate you!",
+        finale: "Wishing you endless health, peace, and happiness today and every day of the year ahead. Love you always, Mom! 💐",
+      },
+      Dad: {
+        title: "To the Best Dad & Role Model",
+        body: "Happy Birthday, Dad! Thank you for always being my steady anchor, biggest supporter, and source of the wisest advice (and best jokes).\n\nWishing you great health, relaxing weekends, and an incredible year ahead!",
+        finale: "Cheers to another fantastic year, Dad — thank you for everything you do! 🎉",
+      },
+      Sister: {
+        title: "Happy Birthday to My Built-In Bestie",
+        body: "Growing up with you has been one of life’s greatest adventures. From our inside jokes to cheering each other on, I would not trade you for the world.\n\nKeep shining brightly and chasing everything that excites your heart!",
+        finale: "Forever proud to have you as my sister. Shine on this year! ✨💖",
+      },
+      Brother: {
+        title: "Cheers to Another Legendary Year",
+        body: "Happy Birthday, Bro! Wishing you a massive year filled with epic wins, great trips, good food, and zero stress.\n\nAlways grateful to have you in my corner — let’s celebrate properly!",
+        finale: "Here’s to crushing every goal this year. Happy Birthday, legend! 🎂🔥",
+      },
+      Friend: {
+        title: "Wishing You the Brightest Birthday!",
+        body: "Happy Birthday! So grateful for your friendship, your positive energy, and all the great memories we have shared.\n\nMay your new year bring fresh adventures, sweet surprises, and plenty of reasons to smile!",
+        finale: "Raise a glass to an unforgettable year ahead — Happy Birthday! 🎈✨",
+      },
+      Colleague: {
+        title: "Wishing You a Wonderful Birthday!",
+        body: "Working alongside someone as thoughtful, capable, and upbeat as you makes every day better.\n\nWishing you a joyful celebration, well-deserved relaxation, and exciting milestones ahead!",
+        finale: "Cheers to a brilliant and rewarding year ahead — Happy Birthday! 🎉",
+      },
+    };
+
+    const BALLOON_PALETTE = [
+      { fill: "#f43f5e", hi: "#fda4af" },
+      { fill: "#a855f7", hi: "#d8b4fe" },
+      { fill: "#f59e0b", hi: "#fde68a" },
+      { fill: "#ec4899", hi: "#fbcfe8" },
+      { fill: "#06b6d4", hi: "#a5f3fc" },
+      { fill: "#10b981", hi: "#a7f3d0" },
+    ];
+
+    const DEFAULT_PHOTOS_STORAGE_KEY = "bespoke_bday_default_photos_v2";
+    const SAVED_DRAFT_STORAGE_KEY = "bespoke_bday_saved_draft_v2";
+
+    function getDefaultUpcomingIso() {
+      const d = new Date();
+      const y = d.getFullYear();
+      const m = String(d.getMonth() + 1).padStart(2, "0");
+      const day = String(d.getDate()).padStart(2, "0");
+      return `${y}-${m}-${day}`;
+    }
+
+    function detectInitialHostUrl() {
+      if (BIRTHDAY_CONFIG.hostUrl) return BIRTHDAY_CONFIG.hostUrl;
+      if (window.location.protocol === "https:" || window.location.protocol === "http:") {
+        return `${window.location.origin}${window.location.pathname}`;
+      }
+      return "https://yourusername.github.io/birthday-surprise/";
+    }
+
+    const state = {
+      activeTab: "experience",
+      isRecipientMode: false,
+      storyPage: 1,
+
+      hasSubmitted: false,
+      hasUnsavedEdits: false,
+      shareMode: "instant",
+      savedShareUrl: "",
+      savedQrUrl: "",
+      hostUrl: detectInitialHostUrl(),
+
+      recipient: BIRTHDAY_CONFIG.recipient,
+      sender: BIRTHDAY_CONFIG.sender,
+      bond: BIRTHDAY_CONFIG.bond,
+      theme: BIRTHDAY_CONFIG.theme,
+      song: BIRTHDAY_CONFIG.song,
+      dateIso: BIRTHDAY_CONFIG.dateIso || getDefaultUpcomingIso(),
+      showCountdown: BIRTHDAY_CONFIG.showCountdown,
+      musicEnabled: BIRTHDAY_CONFIG.musicEnabled,
+      lockEnabled: BIRTHDAY_CONFIG.lockEnabled,
+      passcode: BIRTHDAY_CONFIG.passcode,
+      hint: BIRTHDAY_CONFIG.hint,
+      isUnlocked: !BIRTHDAY_CONFIG.lockEnabled,
+      enteredPin: "",
+
+      letterTitle: BIRTHDAY_CONFIG.letterTitle,
+      letterBody: BIRTHDAY_CONFIG.letterBody,
+      finaleMessage: BIRTHDAY_CONFIG.finaleMessage,
+      wishes: [...BIRTHDAY_CONFIG.wishes],
+      memories: BIRTHDAY_CONFIG.memories.map((m, i) => ({ ...m, id: "m-" + i })),
+
+      envelopeOpened: false,
+      poppedBalloons: [],
+      candlesLit: [true, true, true, true, true],
+      cakeCut: false,
+      polaroidIndex: 0,
+      audioMuted: false,
+      isPreviewingSong: false,
+    };
+
+    /* ==========================================================================
+       2. SMART PHOTO URL NORMALIZER, DEFAULT STORAGE & PRELOADER
+       ========================================================================== */
+    function normalizePhotoUrl(rawUrl) {
+      let s = String(rawUrl || "").trim().replace(/^["']+|["']+$/g, "");
+      if (!s) return "";
+      if (s.startsWith("data:image/")) return s;
+
+      // Unwrap Google Images "imgres?imgurl=..." or redirect URLs automatically
+      if (/google\.[^/]+\/(?:imgres|url)\?/i.test(s)) {
+        try {
+          const u = new URL(s);
+          const embedded = u.searchParams.get("imgurl") || u.searchParams.get("url");
+          if (embedded) s = embedded.trim();
+        } catch (e) {}
+      }
+
+      // Google Drive links -> direct thumbnail endpoint
+      const driveFileMatch = s.match(/drive\.google\.com\/file\/d\/([a-zA-Z0-9_-]+)/i);
+      if (driveFileMatch) {
+        return `https://drive.google.com/thumbnail?id=${driveFileMatch[1]}&sz=w1200`;
+      }
+      const driveIdMatch = s.match(/drive\.google\.com\/(?:open|uc)\?[^#]*\bid=([a-zA-Z0-9_-]+)/i);
+      if (driveIdMatch) {
+        return `https://drive.google.com/thumbnail?id=${driveIdMatch[1]}&sz=w1200`;
+      }
+
+      // GitHub blob page URL -> raw.githubusercontent.com
+      const ghBlobMatch = s.match(/^https?:\/\/github\.com\/([^/]+)\/([^/]+)\/blob\/(.+)$/i);
+      if (ghBlobMatch) {
+        return `https://raw.githubusercontent.com/${ghBlobMatch[1]}/${ghBlobMatch[2]}/${ghBlobMatch[3]}`;
+      }
+
+      // Imgur single-image page -> i.imgur.com direct image
+      const imgurMatch = s.match(/^https?:\/\/(?:www\.)?imgur\.com\/([a-zA-Z0-9]{5,10})(?:[/?#].*)?$/i);
+      if (imgurMatch) {
+        return `https://i.imgur.com/${imgurMatch[1]}.jpg`;
+      }
+
+      // Dropbox share link -> direct raw stream
+      if (/dropbox\.com/i.test(s)) {
+        try {
+          const u = new URL(s);
+          u.searchParams.delete("dl");
+          u.searchParams.set("raw", "1");
+          return u.toString();
+        } catch (e) {}
+      }
+
+      return s;
+    }
+
+    function getMemoryImageSrc(mem) {
+      if (!mem) return "";
+      if (mem.imageData && String(mem.imageData).startsWith("data:image/")) return mem.imageData;
+      return normalizePhotoUrl(mem.imageUrl);
+    }
+
+    const preloadedImageCache = new Map();
+    function preloadMemoryImages() {
+      state.memories.forEach((m) => {
+        const src = getMemoryImageSrc(m);
+        if (src && !preloadedImageCache.has(src)) {
+          const img = new Image();
+          img.referrerPolicy = "no-referrer";
+          img.src = src;
+          preloadedImageCache.set(src, img);
+        }
+      });
+    }
+
+    function savePastedPhotosAsDefault(showConfirmation = false) {
+      try {
+        const cleanDefaults = state.memories.slice(0, 5).map((m) => ({
+          caption: m.caption || "",
+          date: m.date || "",
+          artType: m.artType || "starlight",
+          imageUrl: normalizePhotoUrl(m.imageUrl || ""),
+          imageData: m.imageData || null,
+        }));
+        localStorage.setItem(DEFAULT_PHOTOS_STORAGE_KEY, JSON.stringify(cleanDefaults));
+        BIRTHDAY_CONFIG.memories = cleanDefaults.map((m) => ({ ...m }));
+        preloadMemoryImages();
+        if (showConfirmation) {
+          const count = cleanDefaults.filter((m) => Boolean(m.imageUrl || m.imageData)).length;
+          showToast(
+            count > 0
+              ? `Saved ${count} pasted photo${count > 1 ? "s" : ""} as website defaults!`
+              : "Photo defaults updated!",
+            "⭐"
+          );
+        }
+      } catch (e) {
+        if (showConfirmation) showToast("Photos ready for sharing & export!", "📸");
+      }
+    }
+
+    function loadDefaultPhotosFromStorage() {
+      try {
+        const raw = localStorage.getItem(DEFAULT_PHOTOS_STORAGE_KEY);
+        if (!raw) return false;
+        const parsed = JSON.parse(raw);
+        if (!Array.isArray(parsed) || !parsed.length) return false;
+        const hasAny = parsed.some((m) => Boolean((m.imageUrl && m.imageUrl.trim()) || m.imageData));
+        if (!hasAny) return false;
+        state.memories = parsed.slice(0, 5).map((m, i) => ({
+          id: "def-saved-" + i,
+          caption: String(m.caption || ""),
+          date: String(m.date || ""),
+          artType: m.artType || "starlight",
+          imageUrl: String(m.imageUrl || ""),
+          imageData: typeof m.imageData === "string" && m.imageData.startsWith("data:image/") ? m.imageData : null,
+        }));
+        return true;
+      } catch (e) {
+        return false;
+      }
+    }
+
+    /* ==========================================================================
+       3. WEB AUDIO API: 6 UNIQUE ORIGINAL BIRTHDAY SONGS & SFX
+       ========================================================================== */
+    let audioCtx = null;
+    let songTimer = null;
+    let songStep = 0;
+
+    function ensureAudioCtx() {
+      if (state.audioMuted) return null;
+      try {
+        if (!audioCtx) {
+          const Ctx = window.AudioContext || window.webkitAudioContext;
+          if (Ctx) audioCtx = new Ctx();
+        }
+        if (audioCtx && audioCtx.state === "suspended") audioCtx.resume();
+        return audioCtx;
+      } catch (e) {
+        return null;
+      }
+    }
+
+    function playNote(freq, dur = 0.5, vol = 0.06, delay = 0, type = "sine") {
+      const ctx = ensureAudioCtx();
+      if (!ctx || !freq) return;
+      try {
+        const t = ctx.currentTime + delay;
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.type = type;
+        osc.frequency.setValueAtTime(freq, t);
+        gain.gain.setValueAtTime(0.0001, t);
+        gain.gain.linearRampToValueAtTime(vol, t + 0.018);
+        gain.gain.exponentialRampToValueAtTime(0.0001, t + dur);
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.start(t);
+        osc.stop(t + dur + 0.03);
+      } catch (e) {}
+    }
+
+    const SONG_PATTERNS = {
+      starlight: (step) => {
+        const notes = [523.25, 659.25, 783.99, 1046.5, 440, 659.25, 783.99, 880, 349.23, 523.25, 659.25, 880, 392, 587.33, 783.99, 987.77];
+        const f = notes[step % notes.length];
+        playNote(f, 0.9, 0.04, 0, "sine");
+        playNote(f * 2, 0.4, 0.014, 0.02, "triangle");
+      },
+      waltz: (step) => {
+        const bars = [
+          [261.63, 392, 523.25], [329.63, 493.88, 659.25],
+          [220.00, 329.63, 440], [293.66, 440, 587.33],
+          [174.61, 349.23, 440], [196.00, 392, 493.88],
+        ];
+        const bar = bars[Math.floor(step / 3) % bars.length];
+        const beat = step % 3;
+        if (beat === 0) playNote(bar[0], 0.95, 0.055, 0, "sine");
+        else {
+          playNote(bar[1], 0.45, 0.03, 0, "triangle");
+          playNote(bar[2], 0.55, 0.035, 0.01, "sine");
+        }
+      },
+      lofi: (step) => {
+        const chords = [
+          [261.63, 329.63, 392.0, 493.88],
+          [220.0, 261.63, 329.63, 392.0],
+          [174.61, 220.0, 261.63, 329.63],
+          [196.0, 246.94, 293.66, 392.0],
+        ];
+        const ch = chords[Math.floor(step / 2) % chords.length];
+        if (step % 2 === 0) {
+          ch.forEach((f, i) => playNote(f, 1.1, 0.024, i * 0.035, "triangle"));
+        } else {
+          playNote(ch[3] * 1.5, 0.5, 0.026, 0, "sine");
+        }
+      },
+      party: (step) => {
+        const mel = [523.25, 659.25, 783.99, 659.25, 880, 783.99, 659.25, 587.33, 523.25, 783.99, 1046.5, 880];
+        const f = mel[step % mel.length];
+        playNote(f, 0.32, 0.05, 0, "triangle");
+        if (step % 2 === 0) playNote(f * 0.5, 0.25, 0.035, 0, "sine");
+      },
+      classic: (step) => {
+        const mel = [392, 392, 440, 392, 523.25, 493.88, 0, 392, 392, 440, 392, 587.33, 523.25, 0];
+        const f = mel[step % mel.length];
+        if (f) {
+          playNote(f, 0.55, 0.055, 0, "sine");
+          playNote(f * 2, 0.3, 0.015, 0, "triangle");
+        }
+      },
+      serenade: (step) => {
+        const arp = [196, 293.66, 392, 493.88, 587.33, 493.88, 220, 329.63, 440, 523.25, 659.25, 523.25];
+        const f = arp[step % arp.length];
+        playNote(f, 0.72, 0.042, 0, "triangle");
+      },
+    };
+
+    function startSongLoop(forcePlay = false) {
+      stopSongLoop();
+      if (state.audioMuted || (!state.musicEnabled && !forcePlay)) return;
+      const songMeta = BIRTHDAY_SONGS.find((s) => s.id === state.song) || BIRTHDAY_SONGS[0];
+      const runner = SONG_PATTERNS[songMeta.id] || SONG_PATTERNS.starlight;
+      songStep = 0;
+      runner(songStep++);
+      songTimer = setInterval(() => {
+        if (state.audioMuted) return;
+        runner(songStep++);
+      }, songMeta.tempoMs);
+    }
+
+    function stopSongLoop() {
+      if (songTimer) {
+        clearInterval(songTimer);
+        songTimer = null;
+      }
+      state.isPreviewingSong = false;
+      const btn = document.getElementById("preview-song-btn");
+      if (btn) btn.textContent = "▶ Preview Song";
+    }
+
+    function toggleStudioSongPreview() {
+      if (state.isPreviewingSong) {
+        stopSongLoop();
+      } else {
+        state.audioMuted = false;
+        syncAudioIcons();
+        startSongLoop(true);
+        state.isPreviewingSong = true;
+        const btn = document.getElementById("preview-song-btn");
+        if (btn) btn.textContent = "⏹ Stop Preview";
+      }
+    }
+
+    function playPopSound(idx = 0) {
+      const ctx = ensureAudioCtx();
+      if (!ctx) return;
+      try {
+        const now = ctx.currentTime;
+        const len = Math.floor(ctx.sampleRate * 0.07);
+        const buf = ctx.createBuffer(1, len, ctx.sampleRate);
+        const data = buf.getChannelData(0);
+        for (let i = 0; i < len; i++) data[i] = (Math.random() * 2 - 1) * Math.exp(-i / (len * 0.25));
+        const noise = ctx.createBufferSource();
+        noise.buffer = buf;
+        const filter = ctx.createBiquadFilter();
+        filter.type = "bandpass";
+        filter.frequency.setValueAtTime(1100 + idx * 140, now);
+        const gain = ctx.createGain();
+        gain.gain.setValueAtTime(0.3, now);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.07);
+        noise.connect(filter);
+        filter.connect(gain);
+        gain.connect(ctx.destination);
+        noise.start(now);
+        const chimes = [523.25, 587.33, 659.25, 783.99, 880, 1046.5];
+        playNote(chimes[idx % chimes.length], 0.35, 0.07, 0.04, "triangle");
+      } catch (e) {}
+    }
+
+    function playBlowSound() {
+      const ctx = ensureAudioCtx();
+      if (!ctx) return;
+      try {
+        const now = ctx.currentTime;
+        const len = Math.floor(ctx.sampleRate * 0.16);
+        const buf = ctx.createBuffer(1, len, ctx.sampleRate);
+        const d = buf.getChannelData(0);
+        for (let i = 0; i < len; i++) d[i] = (Math.random() * 2 - 1) * Math.sin((i / len) * Math.PI);
+        const src = ctx.createBufferSource();
+        src.buffer = buf;
+        const lp = ctx.createBiquadFilter();
+        lp.type = "lowpass";
+        lp.frequency.setValueAtTime(680, now);
+        const g = ctx.createGain();
+        g.gain.setValueAtTime(0.15, now);
+        g.gain.exponentialRampToValueAtTime(0.001, now + 0.16);
+        src.connect(lp);
+        lp.connect(g);
+        g.connect(ctx.destination);
+        src.start(now);
+      } catch (e) {}
+    }
+
+    function playHappyBirthdayFanfare() {
+      if (state.audioMuted) return;
+      const mel = [
+        [392, 0.0, 0.24], [392, 0.28, 0.18], [440, 0.5, 0.42], [392, 0.96, 0.42], [523.25, 1.42, 0.42], [493.88, 1.88, 0.78],
+        [392, 2.75, 0.24], [392, 3.03, 0.18], [440, 3.25, 0.42], [392, 3.71, 0.42], [587.33, 4.17, 0.42], [523.25, 4.63, 0.9],
+      ];
+      mel.forEach(([f, del, dur]) => {
+        playNote(f, dur + 0.22, 0.095, del, "triangle");
+        playNote(f * 2, dur * 0.65, 0.025, del, "sine");
+      });
+    }
+
+    function syncAudioIcons() {
+      const icon = state.audioMuted ? "🔇" : "🔊";
+      document.querySelectorAll(".audio-icon-sync").forEach((el) => (el.textContent = icon));
+    }
+
+    function toggleAudio() {
+      state.audioMuted = !state.audioMuted;
+      syncAudioIcons();
+      if (state.audioMuted) {
+        stopSongLoop();
+        showToast("Sound muted", "🔇");
+      } else {
+        playNote(659.25, 0.35, 0.07);
+        if (state.activeTab === "experience" && state.envelopeOpened && state.musicEnabled) {
+          startSongLoop(false);
+        }
+        showToast("Sound enabled", "🔊");
+      }
+    }
+
+    /* ==========================================================================
+       4. RETINA DPR & FRAMERATE-INDEPENDENT CONFETTI / FIREWORKS ENGINE
+       ========================================================================== */
+    const fxCanvas = document.getElementById("fx-canvas");
+    const fxCtx = fxCanvas.getContext("2d");
+    let confetti = [];
+    let fireworks = [];
+    let fwSparks = [];
+    let fxRaf = null;
+    let fxLastTime = 0;
+    let fxWidth = window.innerWidth;
+    let fxHeight = window.innerHeight;
+    let fwTimer = null;
+
+    function resizeFxCanvas() {
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      fxWidth = window.innerWidth;
+      fxHeight = window.innerHeight;
+      fxCanvas.width = Math.round(fxWidth * dpr);
+      fxCanvas.height = Math.round(fxHeight * dpr);
+      fxCtx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    }
+
+    function spawnConfetti(x = window.innerWidth / 2, y = window.innerHeight * 0.44, count = 65) {
+      if (fxWidth !== window.innerWidth || fxHeight !== window.innerHeight) resizeFxCanvas();
+      const colors = ["#f4c27a", "#f472b6", "#a855f7", "#5eead4", "#fb923c", "#ffffff"];
+      for (let i = 0; i < count; i++) {
+        const ang = Math.random() * Math.PI * 2;
+        const spd = 2.6 + Math.random() * 8;
+        confetti.push({
+          x, y,
+          vx: Math.cos(ang) * spd,
+          vy: Math.sin(ang) * spd - 3.2,
+          size: 5 + Math.random() * 6,
+          color: colors[i % colors.length],
+          rot: Math.random() * 360,
+          vRot: (Math.random() - 0.5) * 14,
+          grav: 0.21 + Math.random() * 0.06,
+          alpha: 1,
+          circle: i % 3 === 0,
+        });
+      }
+      if (!fxRaf) {
+        fxLastTime = performance.now();
+        fxRaf = requestAnimationFrame(tickFx);
+      }
+    }
+
+    function launchFirework() {
+      if (fxWidth !== window.innerWidth || fxHeight !== window.innerHeight) resizeFxCanvas();
+      const colors = ["#f4c27a", "#f472b6", "#c084fc", "#5eead4", "#fb923c", "#fde047"];
+      fireworks.push({
+        x: fxWidth * (0.16 + Math.random() * 0.68),
+        y: fxHeight + 10,
+        targetY: fxHeight * (0.15 + Math.random() * 0.32),
+        vy: -(8.5 + Math.random() * 3.2),
+        color: colors[Math.floor(Math.random() * colors.length)],
+      });
+      if (!fxRaf) {
+        fxLastTime = performance.now();
+        fxRaf = requestAnimationFrame(tickFx);
+      }
+    }
+
+    function startFireworks() {
+      if (fwTimer) return;
+      launchFirework();
+      setTimeout(launchFirework, 360);
+      fwTimer = setInterval(() => {
+        if (state.activeTab === "experience" && state.storyPage === 6) launchFirework();
+      }, 1150);
+    }
+
+    function stopFireworks() {
+      if (fwTimer) {
+        clearInterval(fwTimer);
+        fwTimer = null;
+      }
+    }
+
+    function tickFx(now) {
+      const dt = Math.min(Math.max((now - (fxLastTime || now)) / 16.667, 0.35), 2.2);
+      fxLastTime = now;
+      fxCtx.clearRect(0, 0, fxWidth, fxHeight);
+
+      confetti = confetti.filter((p) => p.alpha > 0.02 && p.y < fxHeight + 35);
+      for (const p of confetti) {
+        p.x += p.vx * dt;
+        p.y += p.vy * dt;
+        p.vy += p.grav * dt;
+        p.vx *= Math.pow(0.985, dt);
+        p.rot += p.vRot * dt;
+        if (p.y > fxHeight * 0.72) p.alpha -= 0.026 * dt;
+        fxCtx.save();
+        fxCtx.globalAlpha = Math.max(0, p.alpha);
+        fxCtx.translate(p.x, p.y);
+        fxCtx.rotate((p.rot * Math.PI) / 180);
+        fxCtx.fillStyle = p.color;
+        if (p.circle) {
+          fxCtx.beginPath();
+          fxCtx.arc(0, 0, p.size * 0.5, 0, Math.PI * 2);
+          fxCtx.fill();
+        } else {
+          fxCtx.fillRect(-p.size / 2, -p.size * 0.32, p.size, p.size * 0.64);
+        }
+        fxCtx.restore();
+      }
+
+      for (let i = fireworks.length - 1; i >= 0; i--) {
+        const fw = fireworks[i];
+        fw.y += fw.vy * dt;
+        fxCtx.fillStyle = fw.color;
+        fxCtx.beginPath();
+        fxCtx.arc(fw.x, fw.y, 2.5, 0, Math.PI * 2);
+        fxCtx.fill();
+        if (fw.y <= fw.targetY) {
+          for (let s = 0; s < 34; s++) {
+            const ang = (Math.PI * 2 * s) / 34 + Math.random() * 0.12;
+            const spd = 1.6 + Math.random() * 4.2;
+            fwSparks.push({ x: fw.x, y: fw.y, vx: Math.cos(ang) * spd, vy: Math.sin(ang) * spd, color: fw.color, alpha: 1, size: 2 + Math.random() * 2 });
+          }
+          fireworks.splice(i, 1);
+        }
+      }
+
+      fwSparks = fwSparks.filter((s) => s.alpha > 0.02);
+      for (const s of fwSparks) {
+        s.x += s.vx * dt;
+        s.y += s.vy * dt;
+        s.vy += 0.055 * dt;
+        const damp = Math.pow(0.97, dt);
+        s.vx *= damp;
+        s.vy *= damp;
+        s.alpha -= 0.018 * dt;
+        fxCtx.save();
+        fxCtx.globalAlpha = Math.max(0, s.alpha);
+        fxCtx.fillStyle = s.color;
+        fxCtx.beginPath();
+        fxCtx.arc(s.x, s.y, s.size, 0, Math.PI * 2);
+        fxCtx.fill();
+        fxCtx.restore();
+      }
+
+      if (confetti.length || fireworks.length || fwSparks.length) {
+        fxRaf = requestAnimationFrame(tickFx);
+      } else {
+        fxRaf = null;
+      }
+    }
+
+    /* ==========================================================================
+       5. TOAST, THEME, CHROME & SEPARATE VIEW SWITCHING
+       ========================================================================== */
+    let toastTimer = null;
+    function showToast(msg, emoji = "✨") {
+      const box = document.getElementById("toast-box");
+      document.getElementById("toast-message").textContent = msg;
+      document.getElementById("toast-emoji").textContent = emoji;
+      box.classList.remove("hidden");
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => box.classList.add("hidden"), 2800);
+    }
+
+    function applyTheme(key) {
+      const valid = THEME_KEYS.includes(key) ? key : "celestial";
+      state.theme = valid;
+      document.body.setAttribute("data-theme", valid);
+      document.querySelectorAll(".theme-pick-btn").forEach((btn) => {
+        const active = btn.getAttribute("data-theme-pick") === valid;
+        btn.style.borderColor = active ? "var(--accent)" : "transparent";
+        btn.style.transform = active ? "scale(1.03)" : "scale(1)";
+      });
+    }
+
+    function selectStudioTheme(key) {
+      applyTheme(key);
+      markStudioUnsaved();
+    }
+
+    function cycleAestheticTheme() {
+      const idx = (THEME_KEYS.indexOf(state.theme) + 1) % THEME_KEYS.length;
+      const next = THEME_KEYS[idx];
+      applyTheme(next);
+      markStudioUnsaved();
+      showToast(`Theme: ${THEME_LABELS[next]}`, "🎨");
+    }
+
+    function setRecipientChrome(isRecipient) {
+      state.isRecipientMode = Boolean(isRecipient);
+      document.body.classList.toggle("recipient-mode", state.isRecipientMode);
+      const topbar = document.getElementById("floating-topbar");
+      const mini = document.getElementById("recipient-mini-bar");
+      if (topbar) {
+        topbar.hidden = state.isRecipientMode;
+        topbar.classList.toggle("hidden", state.isRecipientMode);
+      }
+      if (mini) {
+        mini.hidden = !state.isRecipientMode;
+        mini.classList.toggle("hidden", !state.isRecipientMode);
+      }
+    }
+
+    function exitRecipientMode() {
+      setRecipientChrome(false);
+      switchTab("studio");
+    }
+
+    function switchTab(tab) {
+      state.activeTab = tab === "studio" ? "studio" : "experience";
+      const isExp = state.activeTab === "experience";
+
+      document.body.classList.toggle("mode-experience", isExp);
+      document.body.classList.toggle("mode-studio", !isExp);
+
+      const expView = document.getElementById("experience-view");
+      const studioView = document.getElementById("studio-view");
+      expView.hidden = !isExp;
+      expView.classList.toggle("hidden", !isExp);
+      studioView.hidden = isExp;
+      studioView.classList.toggle("hidden", isExp);
+
+      const btnExp = document.getElementById("tab-exp-btn");
+      const btnStudio = document.getElementById("tab-studio-btn");
+      if (btnExp && btnStudio) {
+        btnExp.style.background = isExp ? "var(--btn-grad)" : "transparent";
+        btnExp.style.color = isExp ? "var(--accent-text)" : "var(--text-muted)";
+        btnStudio.style.background = !isExp ? "var(--btn-grad)" : "transparent";
+        btnStudio.style.color = !isExp ? "var(--accent-text)" : "var(--text-muted)";
+      }
+
+      if (isExp) {
+        stopSongLoop();
+        renderAllStoryBindings();
+        if (state.storyPage === 6) startFireworks();
+      } else {
+        stopFireworks();
+        stopMicBlow();
+        syncStateToStudioDom();
+        window.scrollTo({ top: 0, behavior: "instant" });
+      }
+    }
+
+    function previewFromStudio() {
+      syncStudioInputs();
+      switchTab("experience");
+      goToStoryPage(1);
+    }
+
+    function initAmbientStars() {
+      const wrap = document.getElementById("stars-container");
+      if (!wrap) return;
+      wrap.innerHTML = "";
+      for (let i = 0; i < 28; i++) {
+        const dot = document.createElement("span");
+        dot.className = "star-dot";
+        const size = 2 + (i % 3) * 1.3;
+        dot.style.width = `${size}px`;
+        dot.style.height = `${size}px`;
+        dot.style.left = `${(i * 37 + 9) % 96 + 2}%`;
+        dot.style.top = `${(i * 53 + 7) % 92 + 4}%`;
+        dot.style.setProperty("--dur", `${3.2 + (i % 4) * 1.1}s`);
+        dot.style.setProperty("--delay", `${(i % 6) * 0.5}s`);
+        wrap.appendChild(dot);
+      }
+    }
+
+    /* ==========================================================================
+       6. STORY PAGE ENGINE (GPU-COMPOSITED SMOOTH TRANSITIONS)
+       ========================================================================== */
+    function isCardLocked() {
+      return Boolean(state.lockEnabled && !state.isUnlocked);
+    }
+
+    function goToStoryPage(num) {
+      const target = Math.max(1, Math.min(6, num));
+      if (target > 1 && isCardLocked()) {
+        showToast("Enter the 4-digit passcode first!", "🔐");
+        return;
+      }
+      if (state.storyPage === 3 && target !== 3) stopMicBlow();
+
+      state.storyPage = target;
+      for (let p = 1; p <= 6; p++) {
+        const el = document.getElementById(`story-page-${p}`);
+        if (!el) continue;
+        el.hidden = false;
+        el.classList.toggle("is-active", p === target);
+        el.classList.toggle("is-prev", p < target);
+        el.setAttribute("aria-hidden", p === target ? "false" : "true");
+        if (p === target) el.scrollTop = 0;
+      }
+      if (target === 6) startFireworks();
+      else stopFireworks();
+      renderBottomNav();
+    }
+
+    function stepStoryPage(delta) {
+      goToStoryPage(state.storyPage + delta);
+    }
+
+    function renderBottomNav() {
+      const dots = document.getElementById("story-page-dots");
+      const cap = document.getElementById("story-page-caption");
+      const prev = document.getElementById("story-prev-btn");
+      const next = document.getElementById("story-next-btn");
+      if (!dots) return;
+      dots.innerHTML = "";
+      for (let p = 1; p <= 6; p++) {
+        const btn = document.createElement("button");
+        btn.type = "button";
+        btn.setAttribute("aria-label", `Go to page ${p}`);
+        const act = p === state.storyPage;
+        btn.className = "h-2 rounded-full transition-all";
+        btn.style.width = act ? "22px" : "8px";
+        btn.style.background = act ? "var(--accent)" : "var(--dot-inactive)";
+        btn.onclick = () => goToStoryPage(p);
+        dots.appendChild(btn);
+      }
+      if (cap) cap.textContent = `Page ${state.storyPage} of 6 • ${STORY_PAGE_NAMES[state.storyPage - 1]}`;
+      if (prev) prev.disabled = state.storyPage <= 1;
+      if (next) next.disabled = state.storyPage >= 6 || (state.storyPage === 1 && isCardLocked());
+    }
+
+    /* ==========================================================================
+       7. PAGE 1: PASSCODE, ENVELOPE & COUNTDOWN
+       ========================================================================== */
+    function renderPage1Lock() {
+      const locked = isCardLocked();
+      document.getElementById("passcode-view").classList.toggle("hidden", !locked);
+      document.getElementById("envelope-view").classList.toggle("hidden", locked);
+      renderPinDots();
+      renderBottomNav();
+    }
+
+    function renderPinDots() {
+      document.querySelectorAll("#pin-dots .pin-dot").forEach((dot, i) => {
+        const filled = i < state.enteredPin.length;
+        dot.style.background = filled ? "var(--accent)" : "transparent";
+        dot.style.transform = filled ? "scale(1.12)" : "scale(1)";
+      });
+    }
+
+    function enterPinDigit(d) {
+      if (!isCardLocked() || state.enteredPin.length >= 4) return;
+      state.enteredPin += String(d);
+      playNote(520 + state.enteredPin.length * 60, 0.14, 0.05);
+      renderPinDots();
+      if (state.enteredPin.length === 4) {
+        const expected = (state.passcode || "1225").trim();
+        const status = document.getElementById("pin-status-msg");
+        if (state.enteredPin === expected) {
+          state.isUnlocked = true;
+          status.textContent = "";
+          playNote(659.25, 0.35, 0.08, 0);
+          playNote(880, 0.45, 0.08, 0.1);
+          spawnConfetti(window.innerWidth / 2, window.innerHeight * 0.44, 55);
+          renderPage1Lock();
+          showToast("Unlocked! Tap the wax seal to open.", "🔓");
+        } else {
+          const card = document.getElementById("pin-card");
+          card.classList.remove("animate-shake");
+          void card.offsetWidth;
+          card.classList.add("animate-shake");
+          status.textContent = "Incorrect passcode. Tap Hint for a clue!";
+          playNote(220, 0.2, 0.06);
+          setTimeout(() => {
+            state.enteredPin = "";
+            renderPinDots();
+          }, 380);
+        }
+      }
+    }
+
+    function backspacePin() {
+      if (!isCardLocked() || !state.enteredPin.length) return;
+      state.enteredPin = state.enteredPin.slice(0, -1);
+      renderPinDots();
+    }
+
+    function togglePinHint() {
+      const box = document.getElementById("pin-hint-box");
+      box.textContent = `Hint: ${state.hint || "Ask the sender for your secret 4-digit PIN!"}`;
+      box.classList.toggle("hidden");
+    }
+
+    function openEnvelopeAndProceed() {
+      if (isCardLocked()) return;
+      const env = document.getElementById("luxury-envelope");
+      if (state.envelopeOpened) {
+        goToStoryPage(2);
+        return;
+      }
+      state.envelopeOpened = true;
+      env.classList.add("is-opening");
+      playNote(523.25, 0.4, 0.07, 0);
+      playNote(659.25, 0.4, 0.07, 0.1);
+      playNote(783.99, 0.55, 0.08, 0.2);
+      if (state.musicEnabled && !state.audioMuted) setTimeout(() => startSongLoop(false), 450);
+      spawnConfetti(window.innerWidth / 2, window.innerHeight * 0.48, 55);
+      setTimeout(() => goToStoryPage(2), 880);
+    }
+
+    function updateCountdown() {
+      const badge = document.getElementById("cover-countdown-badge");
+      const textEl = document.getElementById("cover-countdown-text");
+      if (!badge || !textEl) return;
+      if (!state.showCountdown) {
+        badge.classList.add("hidden");
+        return;
+      }
+      badge.classList.remove("hidden");
+      const parts = (state.dateIso || "").split("-").map(Number);
+      const m = parts[1] || 12;
+      const d = parts[2] || 25;
+      const now = new Date();
+      if (now.getMonth() === m - 1 && now.getDate() === d) {
+        textEl.textContent = `🎉 Today is ${state.recipient}’s Birthday!`;
+        return;
+      }
+      const target = new Date(now.getFullYear(), m - 1, d, 0, 0, 0);
+      if (target < now) target.setFullYear(now.getFullYear() + 1);
+      const sec = Math.max(0, Math.floor((target - now) / 1000));
+      const days = Math.floor(sec / 86400);
+      const hrs = Math.floor((sec % 86400) / 3600);
+      const mins = Math.floor((sec % 3600) / 60);
+      const s = sec % 60;
+      textEl.textContent = `${days}d ${String(hrs).padStart(2, "0")}h ${String(mins).padStart(2, "0")}m ${String(s).padStart(2, "0")}s until Birthday`;
+    }
+
+    /* ==========================================================================
+       8. PAGE 2: IN-PLACE BALLOON POPPING (ZERO SIBLING JITTER)
+       ========================================================================== */
+    function updateBalloonsHeader() {
+      const count = state.poppedBalloons.length;
+      document.getElementById("balloon-counter-label").textContent = `${count} / 6 Balloons Popped`;
+      document.getElementById("reinflate-btn").classList.toggle("hidden", count === 0);
+      document.getElementById("next-to-cake-btn").classList.toggle("cta-glow", count === 6);
+    }
+
+    function popBalloonInPlace(i, cell, btnEl) {
+      if (state.poppedBalloons.includes(i)) return;
+      state.poppedBalloons.push(i);
+      playPopSound(i);
+      const r = btnEl.getBoundingClientRect();
+      spawnConfetti(r.left + r.width / 2, r.top + r.height / 2, 34);
+      btnEl.classList.add("balloon-bursting");
+      updateBalloonsHeader();
+
+      const wish = state.wishes[i] || BIRTHDAY_CONFIG.wishes[i];
+      setTimeout(() => {
+        if (!state.poppedBalloons.includes(i)) return;
+        cell.innerHTML = "";
+        const card = document.createElement("div");
+        card.className = "wish-pop-in glass-strong rounded-2xl p-3 sm:p-4 w-full h-full flex flex-col items-center justify-center text-center shadow-lg";
+        card.innerHTML = `<span class="text-base mb-1">✨</span><p class="font-serif text-xs sm:text-sm font-medium leading-snug">${escapeHtml(wish)}</p>`;
+        cell.appendChild(card);
+        if (state.poppedBalloons.length === 6) showToast("All 6 wishes unlocked!", "🎂");
+      }, 170);
+    }
+
+    function renderBalloons() {
+      const grid = document.getElementById("balloons-stage-grid");
+      updateBalloonsHeader();
+      grid.innerHTML = "";
+
+      for (let i = 0; i < 6; i++) {
+        const popped = state.poppedBalloons.includes(i);
+        const col = BALLOON_PALETTE[i % BALLOON_PALETTE.length];
+        const wish = state.wishes[i] || BIRTHDAY_CONFIG.wishes[i];
+        const cell = document.createElement("div");
+        cell.className = "flex items-center justify-center min-h-[120px] sm:min-h-[142px]";
+
+        if (!popped) {
+          const btn = document.createElement("button");
+          btn.type = "button";
+          btn.className = "balloon-bob group flex flex-col items-center justify-center cursor-pointer focus:outline-none";
+          btn.style.setProperty("--bob-dur", `${3.6 + (i % 3) * 0.7}s`);
+          btn.style.setProperty("--bob-delay", `${i * 0.35}s`);
+          btn.onclick = () => popBalloonInPlace(i, cell, btn);
+          btn.innerHTML = `
+            <svg viewBox="0 0 86 116" class="w-20 h-28 sm:w-24 sm:h-32 drop-shadow-xl group-hover:scale-110 transition-transform">
+              <defs>
+                <radialGradient id="bGrad${i}" cx="32%" cy="28%" r="70%">
+                  <stop offset="0%" stop-color="${col.hi}" />
+                  <stop offset="55%" stop-color="${col.fill}" />
+                  <stop offset="100%" stop-color="${col.fill}" stop-opacity="0.88" />
+                </radialGradient>
+              </defs>
+              <ellipse cx="43" cy="43" rx="32" ry="38" fill="url(#bGrad${i})" />
+              <ellipse cx="31" cy="29" rx="7" ry="13" transform="rotate(-22 31 29)" fill="rgba(255,255,255,0.42)" />
+              <polygon points="43,80 37,87 49,87" fill="${col.fill}" />
+              <path d="M43 87 Q37 98 44 106 T41 115" stroke="${col.hi}" stroke-width="2" fill="none" stroke-linecap="round" opacity="0.85" />
+            </svg>
+            <span class="text-[11px] font-semibold text-theme-muted -mt-1 group-hover:text-theme-accent">Pop #${i + 1}</span>
+          `;
+          cell.appendChild(btn);
+        } else {
+          const card = document.createElement("div");
+          card.className = "wish-pop-in glass-strong rounded-2xl p-3 sm:p-4 w-full h-full flex flex-col items-center justify-center text-center shadow-lg";
+          card.innerHTML = `<span class="text-base mb-1">✨</span><p class="font-serif text-xs sm:text-sm font-medium leading-snug">${escapeHtml(wish)}</p>`;
+          cell.appendChild(card);
+        }
+        grid.appendChild(cell);
+      }
+    }
+
+    function resetBalloonsStage() {
+      state.poppedBalloons = [];
+      renderBalloons();
+    }
+
+    /* ==========================================================================
+       9. PAGE 3: IN-PLACE CANDLE BLOWING, MIC BLOW & CAKE SLICE
+       ========================================================================== */
+    const CANDLE_X = [114, 142, 170, 198, 226];
+    const CANDLE_COLS = ["#fde047", "#f9a8d4", "#a5f3fc", "#c4b5fd", "#fdba74"];
+    let holdBlowTimer = null;
+    let blowProgress = 0;
+    let micStream = null;
+    let micRaf = null;
+
+    function renderCandles() {
+      const layer = document.getElementById("cake-candles-layer");
+      layer.innerHTML = "";
+      CANDLE_X.forEach((cx, idx) => {
+        const lit = state.candlesLit[idx];
+        const topY = idx === 2 ? 44 : 50;
+        const h = 90 - topY;
+        const g = document.createElementNS("http://www.w3.org/2000/svg", "g");
+        g.setAttribute("id", `candle-group-${idx}`);
+        g.setAttribute("transform", `translate(${cx}, ${topY})`);
+        g.style.cursor = lit ? "pointer" : "default";
+        g.onclick = () => extinguishCandle(idx);
+        g.innerHTML = `
+          <rect x="-12" y="-26" width="24" height="${h + 26}" fill="transparent" />
+          <rect x="-5" y="4" width="10" height="${h}" rx="3.5" fill="${CANDLE_COLS[idx]}" stroke="rgba(0,0,0,0.12)" stroke-width="1" />
+          <line x1="0" y1="0" x2="0" y2="5" stroke="#334155" stroke-width="1.8" stroke-linecap="round" />
+          <g id="candle-flame-${idx}" class="flame-group ${lit ? "" : "hidden"}" filter="url(#softGlow)">
+            <path d="M0 -22 C8 -12 8 -1 0 1 C-8 -1 -8 -12 0 -22 Z" fill="#fb923c" />
+            <path d="M0 -15 C4.5 -8 4.5 -1.5 0 0 C-4.5 -1.5 -4.5 -8 0 -15 Z" fill="#fef08a" />
+          </g>
+          <g id="candle-smoke-${idx}" class="smoke-wisp">
+            <path d="M0 -4 Q-5 -14 2 -22 T-2 -38" stroke="rgba(226,232,240,0.78)" stroke-width="2.5" fill="none" stroke-linecap="round" />
+          </g>
+        `;
+        layer.appendChild(g);
+      });
+      updateCakeUi();
+    }
+
+    function extinguishCandle(idx, skipCheck = false) {
+      if (!state.candlesLit[idx]) return;
+      state.candlesLit[idx] = false;
+      playBlowSound();
+      const group = document.getElementById(`candle-group-${idx}`);
+      const flame = document.getElementById(`candle-flame-${idx}`);
+      const sm = document.getElementById(`candle-smoke-${idx}`);
+      if (group) group.style.cursor = "default";
+      if (flame) flame.classList.add("hidden");
+      if (sm) {
+        sm.classList.remove("is-smoking");
+        void sm.getBoundingClientRect();
+        sm.classList.add("is-smoking");
+      }
+      updateCakeUi();
+      if (!skipCheck && state.candlesLit.every((v) => !v)) onAllCandlesOut();
+    }
+
+    function blowAllCandles() {
+      stopHoldBlow();
+      stopMicBlow();
+      const lit = state.candlesLit.map((v, i) => (v ? i : -1)).filter((i) => i >= 0);
+      if (!lit.length) return;
+      lit.forEach((idx, order) => {
+        setTimeout(() => {
+          extinguishCandle(idx, order < lit.length - 1);
+          if (order === lit.length - 1) onAllCandlesOut();
+        }, order * 105);
+      });
+    }
+
+    function startHoldBlow(e) {
+      if (e) e.preventDefault();
+      if (holdBlowTimer || state.candlesLit.every((v) => !v)) return;
+      playBlowSound();
+      holdBlowTimer = setInterval(() => {
+        blowProgress = Math.min(100, blowProgress + 8);
+        document.getElementById("blow-meter-bar").style.width = `${blowProgress}%`;
+        const nextIdx = state.candlesLit.findIndex(Boolean);
+        if (nextIdx !== -1 && blowProgress >= (5 - state.candlesLit.filter(Boolean).length + 1) * 19) {
+          extinguishCandle(nextIdx);
+        }
+        if (state.candlesLit.every((v) => !v)) stopHoldBlow();
+      }, 90);
+    }
+
+    function stopHoldBlow() {
+      if (holdBlowTimer) {
+        clearInterval(holdBlowTimer);
+        holdBlowTimer = null;
+      }
+      if (state.candlesLit.some(Boolean)) {
+        blowProgress = (5 - state.candlesLit.filter(Boolean).length) * 20;
+        document.getElementById("blow-meter-bar").style.width = `${blowProgress}%`;
+      }
+    }
+
+    async function toggleMicBlow() {
+      if (micStream) {
+        stopMicBlow();
+        return;
+      }
+      try {
+        micStream = await navigator.mediaDevices.getUserMedia({ audio: true });
+        const ctx = ensureAudioCtx() || new (window.AudioContext || window.webkitAudioContext)();
+        const src = ctx.createMediaStreamSource(micStream);
+        const analyser = ctx.createAnalyser();
+        analyser.fftSize = 256;
+        src.connect(analyser);
+        const data = new Uint8Array(analyser.frequencyBinCount);
+        const btn = document.getElementById("mic-blow-btn");
+        if (btn) btn.textContent = "🎤 Listening... Blow!";
+        showToast("Blow into your microphone!", "🌬️");
+
+        let lastBlowTime = 0;
+        const listen = () => {
+          if (!micStream) return;
+          analyser.getByteFrequencyData(data);
+          let sum = 0;
+          for (let i = 0; i < data.length; i++) sum += data[i];
+          const avg = sum / data.length;
+          if (avg > 42 && Date.now() - lastBlowTime > 260) {
+            lastBlowTime = Date.now();
+            const nextIdx = state.candlesLit.findIndex(Boolean);
+            if (nextIdx !== -1) {
+              extinguishCandle(nextIdx);
+              blowProgress = (5 - state.candlesLit.filter(Boolean).length) * 20;
+              document.getElementById("blow-meter-bar").style.width = `${blowProgress}%`;
+            }
+            if (state.candlesLit.every((v) => !v)) {
+              stopMicBlow();
+              return;
+            }
+          }
+          micRaf = requestAnimationFrame(listen);
+        };
+        micRaf = requestAnimationFrame(listen);
+      } catch (err) {
+        showToast("Mic permission unavailable — use Hold to Blow!", "🌬️");
+      }
+    }
+
+    function stopMicBlow() {
+      if (micRaf) cancelAnimationFrame(micRaf);
+      micRaf = null;
+      if (micStream) {
+        micStream.getTracks().forEach((t) => t.stop());
+        micStream = null;
+      }
+      const btn = document.getElementById("mic-blow-btn");
+      if (btn) btn.textContent = "🎤 Mic Blow";
+    }
+
+    function onAllCandlesOut() {
+      stopMicBlow();
+      blowProgress = 100;
+      document.getElementById("blow-meter-bar").style.width = "100%";
+      spawnConfetti(window.innerWidth / 2, window.innerHeight * 0.4, 110);
+      playHappyBirthdayFanfare();
+      showToast(`Happy Birthday, ${state.recipient}!`, "🎉");
+      updateCakeUi();
+    }
+
+    function cutTheCake() {
+      if (state.cakeCut) return;
+      state.cakeCut = true;
+      document.getElementById("cake-wrapper").classList.add("cake-cut");
+      playNote(659.25, 0.35, 0.08, 0);
+      playNote(880, 0.5, 0.08, 0.12);
+      spawnConfetti(window.innerWidth * 0.56, window.innerHeight * 0.5, 60);
+      showToast("First slice served with love!", "🍰");
+      updateCakeUi();
+    }
+
+    function resetCakeStage() {
+      stopHoldBlow();
+      stopMicBlow();
+      state.candlesLit = [true, true, true, true, true];
+      state.cakeCut = false;
+      blowProgress = 0;
+      const bar = document.getElementById("blow-meter-bar");
+      if (bar) bar.style.width = "0%";
+      const wrap = document.getElementById("cake-wrapper");
+      if (wrap) wrap.classList.remove("cake-cut");
+      renderCandles();
+    }
+
+    function updateCakeUi() {
+      const allOut = state.candlesLit.every((v) => !v);
+      document.getElementById("cake-controls-blowing").classList.toggle("hidden", allOut);
+      document.getElementById("cake-controls-after-blow").classList.toggle("hidden", !allOut);
+      const cutBtn = document.getElementById("cut-cake-btn");
+      const nextBtn = document.getElementById("next-to-letter-btn");
+      const prompt = document.getElementById("cake-prompt-text");
+      if (!allOut) {
+        const left = state.candlesLit.filter(Boolean).length;
+        prompt.textContent = `${left} glowing candle${left > 1 ? "s" : ""} left — tap a flame, hold to blow, or use Mic!`;
+      } else if (!state.cakeCut) {
+        cutBtn.classList.remove("hidden");
+        nextBtn.classList.add("hidden");
+        prompt.textContent = "✨ All candles out! Now cut the first slice of birthday cake!";
+      } else {
+        cutBtn.classList.add("hidden");
+        nextBtn.classList.remove("hidden");
+        prompt.textContent = `🍰 Cheers to ${state.recipient}! Ready for your birthday letter?`;
+      }
+    }
+
+    /* ==========================================================================
+       10. PAGE 5: POLAROID MEMORY DECK (URL PHOTOS + ILLUSTRATIONS + THUMB STRIP)
+       ========================================================================== */
+    function buildPlaceholderArtSvg(artType) {
+      const arts = {
+        starlight: `<svg viewBox="0 0 300 240" class="w-full h-full object-cover"><defs><linearGradient id="gStar" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#1e1b4b"/><stop offset="100%" stop-color="#4c1d95"/></linearGradient></defs><rect width="300" height="240" fill="url(#gStar)"/><circle cx="230" cy="58" r="24" fill="#fef08a" opacity="0.95"/><circle cx="240" cy="52" r="21" fill="#2c1d63"/><g fill="#fde68a"><circle cx="48" cy="42" r="2.5"/><circle cx="96" cy="28" r="1.8"/><circle cx="152" cy="54" r="2.8"/><circle cx="188" cy="30" r="1.6"/><circle cx="72" cy="86" r="2"/><circle cx="262" cy="96" r="2.2"/></g><path d="M0 185 Q75 148 155 178 T300 165 L300 240 L0 240 Z" fill="#0f0a24"/></svg>`,
+        cafe: `<svg viewBox="0 0 300 240" class="w-full h-full object-cover"><defs><linearGradient id="gCafe" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#fef3c7"/><stop offset="100%" stop-color="#fed7aa"/></linearGradient></defs><rect width="300" height="240" fill="url(#gCafe)"/><rect x="98" y="102" width="104" height="80" rx="22" fill="#ffffff" stroke="#d97706" stroke-width="4"/><path d="M202 118 C226 118 226 158 202 158" fill="none" stroke="#d97706" stroke-width="6" stroke-linecap="round"/><ellipse cx="150" cy="112" rx="44" ry="12" fill="#92400e"/></svg>`,
+        sunset: `<svg viewBox="0 0 300 240" class="w-full h-full object-cover"><defs><linearGradient id="gSun" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#f43f5e"/><stop offset="55%" stop-color="#fb923c"/><stop offset="100%" stop-color="#fde047"/></linearGradient></defs><rect width="300" height="240" fill="url(#gSun)"/><circle cx="150" cy="136" r="46" fill="#fffbeb" opacity="0.92"/><path d="M0 162 Q80 124 160 156 T300 144 L300 240 L0 240 Z" fill="#431407" opacity="0.88"/></svg>`,
+        sparklers: `<svg viewBox="0 0 300 240" class="w-full h-full object-cover"><rect width="300" height="240" fill="#1f1235"/><g stroke="#fde047" stroke-width="2.5" stroke-linecap="round"><line x1="150" y1="104" x2="150" y2="46"/><line x1="150" y1="104" x2="196" y2="62"/><line x1="150" y1="104" x2="210" y2="108"/><line x1="150" y1="104" x2="188" y2="148"/><line x1="150" y1="104" x2="112" y2="148"/><line x1="150" y1="104" x2="90" y2="108"/><line x1="150" y1="104" x2="104" y2="62"/></g><circle cx="150" cy="104" r="14" fill="#ffffff"/><line x1="150" y1="118" x2="150" y2="220" stroke="#94a3b8" stroke-width="4" stroke-linecap="round"/></svg>`,
+        balloons: `<svg viewBox="0 0 300 240" class="w-full h-full object-cover"><defs><linearGradient id="gSky" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#38bdf8"/><stop offset="100%" stop-color="#fbcfe8"/></linearGradient></defs><rect width="300" height="240" fill="url(#gSky)"/><ellipse cx="105" cy="96" rx="34" ry="42" fill="#f43f5e"/><ellipse cx="194" cy="78" rx="28" ry="34" fill="#f59e0b"/><ellipse cx="62" cy="195" rx="56" ry="22" fill="#ffffff" opacity="0.72"/><ellipse cx="228" cy="202" rx="68" ry="24" fill="#ffffff" opacity="0.78"/></svg>`,
+      };
+      return arts[artType] || arts.starlight;
+    }
+
+    function renderPolaroids() {
+      const container = document.getElementById("polaroid-stack-container");
+      const counter = document.getElementById("polaroid-counter");
+      const strip = document.getElementById("polaroid-thumb-strip");
+      const list = state.memories.length ? state.memories : BIRTHDAY_CONFIG.memories;
+      const len = list.length;
+      state.polaroidIndex = ((state.polaroidIndex % len) + len) % len;
+      counter.textContent = `${state.polaroidIndex + 1} / ${len}`;
+
+      container.innerHTML = "";
+      const rots = [0, 4.2, -3.8, 6.5, -5.5];
+      for (let off = Math.min(len - 1, 3); off >= 0; off--) {
+        const idx = (state.polaroidIndex + off) % len;
+        const item = list[idx];
+        const card = document.createElement("div");
+        card.className = "polaroid-card";
+        card.style.zIndex = String(10 - off);
+        card.style.transform = `translate3d(0, ${off * 6}px, 0) scale(${1 - off * 0.035}) rotate(${rots[off % rots.length]}deg)`;
+        card.style.opacity = off === 0 ? "1" : String(Math.max(0.55, 1 - off * 0.14));
+        if (off === 0) card.onclick = () => cyclePolaroid(1);
+
+        const imgSrc = getMemoryImageSrc(item);
+        const frame = document.createElement("div");
+        frame.className = "polaroid-photo-frame";
+        if (imgSrc) {
+          const img = document.createElement("img");
+          img.src = imgSrc;
+          img.alt = item.caption || "Birthday Memory";
+          img.referrerPolicy = "no-referrer";
+          img.onerror = () => {
+            frame.innerHTML = buildPlaceholderArtSvg(item.artType);
+          };
+          frame.appendChild(img);
+        } else {
+          frame.innerHTML = buildPlaceholderArtSvg(item.artType);
+        }
+
+        const footer = document.createElement("div");
+        footer.className = "pt-2.5 px-1 flex items-end justify-between gap-2 text-left shrink-0";
+        footer.innerHTML = `
+          <p class="font-hand text-xl sm:text-2xl leading-tight font-semibold text-stone-800 line-clamp-2">${escapeHtml(item.caption || "Sweet Memory")}</p>
+          <span class="font-hand text-sm text-stone-500 shrink-0">${escapeHtml(item.date || "")}</span>
+        `;
+
+        card.appendChild(frame);
+        card.appendChild(footer);
+        container.appendChild(card);
+      }
+
+      if (strip) {
+        strip.innerHTML = "";
+        list.forEach((m, i) => {
+          const b = document.createElement("button");
+          b.type = "button";
+          const active = i === state.polaroidIndex;
+          b.className = `w-11 h-11 rounded-xl overflow-hidden border-2 transition-transform shrink-0 ${active ? "scale-110 shadow-lg" : "opacity-65 hover:opacity-100"}`;
+          b.style.borderColor = active ? "var(--accent)" : "transparent";
+          b.onclick = () => {
+            state.polaroidIndex = i;
+            renderPolaroids();
+          };
+          const src = getMemoryImageSrc(m);
+          if (src) {
+            const im = document.createElement("img");
+            im.src = src;
+            im.alt = "";
+            im.referrerPolicy = "no-referrer";
+            im.className = "w-full h-full object-cover";
+            im.onerror = () => { b.innerHTML = buildPlaceholderArtSvg(m.artType); };
+            b.appendChild(im);
+          } else {
+            b.innerHTML = buildPlaceholderArtSvg(m.artType);
+          }
+          strip.appendChild(b);
+        });
+      }
+    }
+
+    let polaroidFlipBusy = false;
+    function cyclePolaroid(delta) {
+      if (polaroidFlipBusy) return;
+      const top = document.querySelector("#polaroid-stack-container .polaroid-card:last-child");
+      playNote(587.33 + (delta > 0 ? 80 : -40), 0.18, 0.05);
+      if (top) {
+        polaroidFlipBusy = true;
+        top.classList.add(delta > 0 ? "toss-out" : "toss-right");
+        setTimeout(() => {
+          state.polaroidIndex += delta;
+          renderPolaroids();
+          polaroidFlipBusy = false;
+        }, 230);
+      } else {
+        state.polaroidIndex += delta;
+        renderPolaroids();
+      }
+    }
+
+    /* ==========================================================================
+       11. MASTER BINDINGS, KEEPSAKE PNG & REPLAY
+       ========================================================================== */
+    function formatPrettyDate(iso) {
+      if (!iso) return "Birthday Celebration";
+      const [y, m, d] = iso.split("-").map(Number);
+      if (!y || !m || !d) return iso;
+      return new Date(y, m - 1, d).toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" });
+    }
+
+    function updateCoverMedallion() {
+      const firstPhotoMem = state.memories.find((m) => Boolean(getMemoryImageSrc(m)));
+      const medallion = document.getElementById("cover-photo-medallion");
+      const medallionImg = document.getElementById("cover-photo-img");
+      if (!medallion || !medallionImg) return;
+      if (firstPhotoMem) {
+        medallionImg.src = getMemoryImageSrc(firstPhotoMem);
+        medallionImg.onerror = () => medallion.classList.add("hidden");
+        medallion.classList.remove("hidden");
+      } else {
+        medallion.classList.add("hidden");
+      }
+    }
+
+    function renderAllStoryBindings() {
+      const recName = state.recipient || "Friend";
+      document.title = `Happy Birthday, ${recName}! ✨`;
+      document.querySelectorAll(".bind-recipient").forEach((el) => (el.textContent = recName));
+      document.querySelectorAll(".bind-sender").forEach((el) => (el.textContent = state.sender || "Someone Special"));
+      document.querySelectorAll(".bind-bond").forEach((el) => (el.textContent = state.bond));
+      document.getElementById("letter-bond-pill").textContent = `To My ${state.bond}`;
+      document.getElementById("letter-date-label").textContent = formatPrettyDate(state.dateIso);
+      document.getElementById("letter-heading").textContent = state.letterTitle || "Happy Birthday!";
+      document.getElementById("letter-body-display").textContent = state.letterBody;
+
+      const finaleText = (state.finaleMessage || "").trim() || state.letterBody || "";
+      document.getElementById("keepsake-quote-excerpt").textContent = finaleText;
+      document.getElementById("keepsake-date-pill").textContent = formatPrettyDate(state.dateIso);
+
+      updateCoverMedallion();
+      preloadMemoryImages();
+      applyTheme(state.theme);
+      renderPage1Lock();
+      updateCountdown();
+      renderBalloons();
+      renderCandles();
+      renderPolaroids();
+    }
+
+    function wrapCanvasText(ctx, text, x, y, maxWidth, lineHeight, maxLines = 7) {
+      const paragraphs = String(text || "").split(/\n+/);
+      let cy = y;
+      let drawn = 0;
+      for (const para of paragraphs) {
+        const words = para.trim().split(/\s+/);
+        let line = "";
+        for (const word of words) {
+          const test = line ? `${line} ${word}` : word;
+          if (ctx.measureText(test).width > maxWidth && line) {
+            ctx.fillText(line, x, cy);
+            line = word;
+            cy += lineHeight;
+            drawn++;
+            if (drawn >= maxLines) return;
+          } else {
+            line = test;
+          }
+        }
+        if (line && drawn < maxLines) {
+          ctx.fillText(line, x, cy);
+          cy += lineHeight;
+          drawn++;
+        }
+        if (drawn >= maxLines) return;
+      }
+    }
+
+    function downloadKeepsakePng() {
+      try {
+        const c = document.createElement("canvas");
+        c.width = 1200;
+        c.height = 820;
+        const ctx = c.getContext("2d");
+        const pals = {
+          celestial: { bg1: "#24134e", bg2: "#080416", accent: "#f4c27a", ink: "#fbf8ff", muted: "#c9bfe2" },
+          blush: { bg1: "#fff6f8", bg2: "#f3cdd7", accent: "#be123c", ink: "#38101d", muted: "#784252" },
+          aurora: { bg1: "#114742", bg2: "#051117", accent: "#5eead4", ink: "#f0fdfa", muted: "#a6d5cf" },
+          terracotta: { bg1: "#4d1e36", bg2: "#140814", accent: "#fb923c", ink: "#fff7f0", muted: "#e3bfb3" },
+        };
+        const pal = pals[state.theme] || pals.celestial;
+        const grad = ctx.createLinearGradient(0, 0, 1200, 820);
+        grad.addColorStop(0, pal.bg1);
+        grad.addColorStop(1, pal.bg2);
+        ctx.fillStyle = grad;
+        ctx.fillRect(0, 0, 1200, 820);
+
+        ctx.strokeStyle = pal.accent;
+        ctx.lineWidth = 4;
+        ctx.strokeRect(42, 42, 1116, 736);
+        ctx.lineWidth = 1.5;
+        ctx.strokeRect(56, 56, 1088, 708);
+
+        ctx.textAlign = "center";
+        ctx.fillStyle = pal.accent;
+        ctx.font = "bold 24px Inter, sans-serif";
+        ctx.fillText("BIRTHDAY CELEBRATION KEEPSAKE", 600, 128);
+
+        ctx.fillStyle = pal.ink;
+        ctx.font = "bold 68px Georgia, serif";
+        ctx.fillText(`Happy Birthday, ${state.recipient}!`, 600, 224);
+
+        ctx.fillStyle = pal.muted;
+        ctx.font = "italic 28px Georgia, serif";
+        ctx.fillText(`${state.bond}  •  ${formatPrettyDate(state.dateIso)}`, 600, 282);
+
+        ctx.fillStyle = pal.ink;
+        ctx.font = "27px Georgia, serif";
+        const finaleNote = (state.finaleMessage || state.letterBody || "").trim();
+        wrapCanvasText(ctx, `“${finaleNote}”`, 600, 368, 940, 42, 7);
+
+        ctx.fillStyle = pal.accent;
+        ctx.font = "italic 42px Georgia, serif";
+        ctx.fillText(`With love, ${state.sender}`, 600, 715);
+
+        const a = document.createElement("a");
+        a.download = `Happy-Birthday-${state.recipient.replace(/[^a-z0-9]+/gi, "-")}.png`;
+        a.href = c.toDataURL("image/png");
+        a.click();
+        showToast("Keepsake PNG downloaded!", "🖼️");
+      } catch (err) {
+        showToast("Use Print to save as PDF", "🖨️");
+      }
+    }
+
+    function replayFullSurprise() {
+      state.envelopeOpened = false;
+      state.poppedBalloons = [];
+      state.polaroidIndex = 0;
+      if (state.lockEnabled) {
+        state.isUnlocked = false;
+        state.enteredPin = "";
+      }
+      document.getElementById("luxury-envelope").classList.remove("is-opening");
+      resetCakeStage();
+      renderAllStoryBindings();
+      goToStoryPage(1);
+      showToast("Replaying your birthday surprise!", "✨");
+    }
+
+    /* ==========================================================================
+       12. CREATOR STUDIO UI, PHOTO URL MANAGER & SUBMIT WORKFLOW
+       ========================================================================== */
+    function markStudioUnsaved() {
+      if (state.hasSubmitted) {
+        state.hasUnsavedEdits = true;
+        const badge = document.getElementById("studio-unsaved-badge");
+        if (badge) badge.classList.remove("hidden");
+      }
+    }
+
+    function updateCharCounters() {
+      const lEl = document.getElementById("letter-char-count");
+      const fEl = document.getElementById("finale-char-count");
+      if (lEl) lEl.textContent = `${(state.letterBody || "").length} / 5000`;
+      if (fEl) fEl.textContent = `${(state.finaleMessage || "").length} / 1500`;
+    }
+
+    function renderStudioBonds() {
+      const wrap = document.getElementById("studio-bond-pills");
+      wrap.innerHTML = "";
+      BONDS.forEach((b) => {
+        const active = state.bond === b;
+        const btn = document.createElement("button");
+        btn.type = "button";
+        btn.textContent = b;
+        btn.className = "px-3.5 py-1.5 rounded-full text-xs font-semibold transition-all";
+        if (active) {
+          btn.style.background = "var(--btn-grad)";
+          btn.style.color = "var(--accent-text)";
+        } else {
+          btn.classList.add("glass-panel");
+        }
+        btn.onclick = () => {
+          state.bond = b;
+          renderStudioBonds();
+          markStudioUnsaved();
+        };
+        wrap.appendChild(btn);
+      });
+    }
+
+    function renderStudioSongs() {
+      const grid = document.getElementById("studio-songs-grid");
+      grid.innerHTML = "";
+      BIRTHDAY_SONGS.forEach((song) => {
+        const active = state.song === song.id;
+        const btn = document.createElement("button");
+        btn.type = "button";
+        btn.className = "p-3 rounded-2xl text-left border transition-all flex items-start gap-2.5";
+        btn.style.background = active ? "var(--surface-strong)" : "var(--surface)";
+        btn.style.borderColor = active ? "var(--accent)" : "var(--surface-border)";
+        btn.onclick = () => {
+          state.song = song.id;
+          renderStudioSongs();
+          markStudioUnsaved();
+          if (state.isPreviewingSong) startSongLoop(true);
+        };
+        btn.innerHTML = `
+          <span class="text-lg shrink-0">${song.emoji}</span>
+          <div class="min-w-0">
+            <div class="text-xs font-bold truncate ${active ? "text-theme-accent" : ""}">${song.name}</div>
+            <div class="text-[10px] text-theme-muted leading-snug">${song.desc}</div>
+          </div>
+        `;
+        grid.appendChild(btn);
+      });
+    }
+
+    function renderStudioWishes() {
+      const grid = document.getElementById("studio-wishes-grid");
+      grid.innerHTML = "";
+      for (let i = 0; i < 6; i++) {
+        const inp = document.createElement("input");
+        inp.type = "text";
+        inp.maxLength = 72;
+        inp.value = state.wishes[i] || "";
+        inp.placeholder = `Balloon Wish #${i + 1}`;
+        inp.className = "studio-input w-full px-3.5 py-2 rounded-xl text-xs";
+        inp.oninput = (e) => {
+          state.wishes[i] = e.target.value;
+          markStudioUnsaved();
+        };
+        grid.appendChild(inp);
+      }
+    }
+
+    function refreshStudioPhotoRowPreview(idx) {
+      const m = state.memories[idx];
+      if (!m) return;
+      const thumbBox = document.getElementById(`studio-photo-thumb-${idx}`);
+      const statusEl = document.getElementById(`studio-photo-status-${idx}`);
+      if (!thumbBox || !statusEl) return;
+
+      const src = getMemoryImageSrc(m);
+      if (src) {
+        const img = document.createElement("img");
+        img.src = src;
+        img.alt = "";
+        img.referrerPolicy = "no-referrer";
+        img.className = "w-full h-full object-cover";
+        img.onload = () => {
+          statusEl.textContent = m.imageData ? "✓ Uploaded file ready" : "✓ Image address loaded & saved as default!";
+          statusEl.className = "text-[11px] font-semibold text-emerald-400";
+        };
+        img.onerror = () => {
+          thumbBox.innerHTML = buildPlaceholderArtSvg(m.artType);
+          statusEl.textContent = "⚠️ Could not load URL — try Copy image address (direct .jpg/.png)";
+          statusEl.className = "text-[11px] font-semibold text-amber-300";
+        };
+        thumbBox.innerHTML = "";
+        thumbBox.appendChild(img);
+      } else {
+        thumbBox.innerHTML = buildPlaceholderArtSvg(m.artType);
+        statusEl.textContent = "Illustrated preset (paste an Image Address above)";
+        statusEl.className = "text-[11px] text-theme-muted";
+      }
+    }
+
+    function renderStudioPhotos() {
+      const wrap = document.getElementById("studio-photos-list");
+      document.getElementById("studio-photo-count").textContent = String(state.memories.length);
+      const addBtn = document.getElementById("studio-add-photo-btn");
+      if (addBtn) addBtn.classList.toggle("hidden", state.memories.length >= 5);
+      wrap.innerHTML = "";
+
+      state.memories.forEach((m, idx) => {
+        const row = document.createElement("div");
+        row.className = "glass-panel rounded-2xl p-3 flex flex-col sm:flex-row items-start sm:items-center gap-3";
+        row.innerHTML = `
+          <div id="studio-photo-thumb-${idx}" class="w-16 h-16 rounded-xl overflow-hidden shrink-0 bg-black/25 shadow-sm"></div>
+          <div class="flex-1 w-full min-w-0 space-y-2">
+            <div class="flex items-center gap-2">
+              <input type="text" value="${escapeAttr(m.imageUrl || "")}" placeholder="Paste copied Image Address (https://... or photo1.jpg)"
+                oninput="updateStudioMemory(${idx}, 'imageUrl', this.value)"
+                class="studio-input flex-1 px-3 py-1.5 rounded-lg text-xs font-mono" />
+              <label class="glass-panel px-2.5 py-1.5 rounded-lg text-[11px] font-bold text-theme-accent cursor-pointer shrink-0 hover:scale-105 transition-transform">
+                📷 File
+                <input type="file" accept="image/*" onchange="replaceStudioPhoto(${idx}, event)" class="hidden" />
+              </label>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-2">
+              <input type="text" value="${escapeAttr(m.caption || "")}" maxlength="70" placeholder="Handwritten caption..."
+                oninput="updateStudioMemory(${idx}, 'caption', this.value)"
+                class="studio-input sm:col-span-2 px-3 py-1.5 rounded-lg text-xs" />
+              <input type="text" value="${escapeAttr(m.date || "")}" maxlength="26" placeholder="Date / label"
+                oninput="updateStudioMemory(${idx}, 'date', this.value)"
+                class="studio-input px-3 py-1.5 rounded-lg text-xs" />
+            </div>
+            <div class="flex items-center justify-between gap-2">
+              <span id="studio-photo-status-${idx}" class="text-[11px] text-theme-muted"></span>
+              ${state.memories.length > 1 ? `<button type="button" onclick="removeStudioMemory(${idx})" class="text-[11px] font-semibold text-rose-400 hover:underline">Remove</button>` : ""}
+            </div>
+          </div>
+        `;
+        wrap.appendChild(row);
+        refreshStudioPhotoRowPreview(idx);
+      });
+    }
+
+    function updateStudioMemory(idx, field, val) {
+      if (!state.memories[idx]) return;
+      state.memories[idx][field] = val;
+      if (field === "imageUrl") {
+        if (val.trim()) state.memories[idx].imageData = null;
+        refreshStudioPhotoRowPreview(idx);
+        savePastedPhotosAsDefault(false);
+        updateCoverMedallion();
+      }
+      renderPolaroids();
+      markStudioUnsaved();
+    }
+
+    function addStudioPhotoSlot() {
+      if (state.memories.length >= 5) return;
+      const artTypes = ["starlight", "cafe", "sunset", "sparklers", "balloons"];
+      state.memories.push({
+        id: "m-" + Date.now(),
+        caption: `Memory #${state.memories.length + 1}`,
+        date: "Special Day",
+        artType: artTypes[state.memories.length % artTypes.length],
+        imageUrl: "",
+        imageData: null,
+      });
+      renderStudioPhotos();
+      markStudioUnsaved();
+    }
+
+    function removeStudioMemory(idx) {
+      if (state.memories.length <= 1) return;
+      state.memories.splice(idx, 1);
+      savePastedPhotosAsDefault(false);
+      renderStudioPhotos();
+      renderPolaroids();
+      markStudioUnsaved();
+    }
+
+    function compressPhotoFile(file, maxDim = 900, quality = 0.78) {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onerror = reject;
+        reader.onload = () => {
+          const img = new Image();
+          img.onerror = reject;
+          img.onload = () => {
+            let w = img.naturalWidth || img.width;
+            let h = img.naturalHeight || img.height;
+            if (w > maxDim || h > maxDim) {
+              if (w >= h) { h = Math.round((h * maxDim) / w); w = maxDim; }
+              else { w = Math.round((w * maxDim) / h); h = maxDim; }
+            }
+            const c = document.createElement("canvas");
+            c.width = w; c.height = h;
+            const ctx = c.getContext("2d");
+            ctx.fillStyle = "#ffffff";
+            ctx.fillRect(0, 0, w, h);
+            ctx.drawImage(img, 0, 0, w, h);
+            resolve(c.toDataURL("image/jpeg", quality));
+          };
+          img.src = String(reader.result || "");
+        };
+        reader.readAsDataURL(file);
+      });
+    }
+
+    async function replaceStudioPhoto(idx, event) {
+      const file = event.target.files && event.target.files[0];
+      event.target.value = "";
+      if (!file || !file.type.startsWith("image/")) return;
+      try {
+        const dataUrl = await compressPhotoFile(file, 900, 0.78);
+        if (state.memories[idx]) {
+          state.memories[idx].imageData = dataUrl;
+          state.memories[idx].imageUrl = "";
+          savePastedPhotosAsDefault(false);
+          renderStudioPhotos();
+          renderPolaroids();
+          updateCoverMedallion();
+          markStudioUnsaved();
+          showToast("Photo uploaded & visible in Preview!", "📸");
+        }
+      } catch (e) {
+        showToast("Could not read that image file", "⚠️");
+      }
+    }
+
+    async function handleStudioPhotoUpload(event) {
+      const files = Array.from(event.target.files || []).filter((f) => f.type.startsWith("image/"));
+      event.target.value = "";
+      if (!files.length) return;
+      for (const f of files.slice(0, 5)) {
+        try {
+          const dataUrl = await compressPhotoFile(f, 900, 0.78);
+          const emptyIdx = state.memories.findIndex((m) => !getMemoryImageSrc(m));
+          const entry = {
+            id: "u-" + Date.now() + Math.random().toString(36).slice(2, 5),
+            caption: f.name.replace(/\.[^/.]+$/, "").replace(/[-_]+/g, " ").slice(0, 40) || `Memory with ${state.recipient}`,
+            date: "Special Day",
+            artType: "starlight",
+            imageUrl: "",
+            imageData: dataUrl,
+          };
+          if (emptyIdx !== -1) state.memories[emptyIdx] = entry;
+          else if (state.memories.length < 5) state.memories.push(entry);
+          else state.memories[4] = entry;
+        } catch (e) {}
+      }
+      savePastedPhotosAsDefault(false);
+      renderStudioPhotos();
+      renderPolaroids();
+      updateCoverMedallion();
+      markStudioUnsaved();
+      showToast("Uploaded photos added to Polaroids!", "📸");
+    }
+
+    function syncStateToStudioDom() {
+      document.getElementById("s-recipient").value = state.recipient;
+      document.getElementById("s-sender").value = state.sender;
+      document.getElementById("s-date").value = state.dateIso;
+      document.getElementById("s-countdown").checked = state.showCountdown;
+      document.getElementById("s-music").checked = state.musicEnabled;
+      document.getElementById("s-lock-enabled").checked = state.lockEnabled;
+      document.getElementById("s-lock-fields").classList.toggle("hidden", !state.lockEnabled);
+      document.getElementById("s-passcode").value = state.passcode;
+      document.getElementById("s-hint").value = state.hint;
+      document.getElementById("s-letter-title").value = state.letterTitle;
+      document.getElementById("s-letter-body").value = state.letterBody;
+      document.getElementById("s-finale-message").value = state.finaleMessage;
+      document.getElementById("s-host-url").value = state.hostUrl;
+      applyTheme(state.theme);
+      renderStudioBonds();
+      renderStudioSongs();
+      renderStudioWishes();
+      renderStudioPhotos();
+      updateCharCounters();
+    }
+
+    function syncStudioInputs() {
+      state.recipient = document.getElementById("s-recipient").value.trim() || "Friend";
+      state.sender = document.getElementById("s-sender").value.trim() || "Someone Special";
+      state.dateIso = document.getElementById("s-date").value || getDefaultUpcomingIso();
+      state.showCountdown = document.getElementById("s-countdown").checked;
+      state.musicEnabled = document.getElementById("s-music").checked;
+      state.hint = document.getElementById("s-hint").value.trim();
+      state.letterTitle = document.getElementById("s-letter-title").value.trim() || "Happy Birthday!";
+      state.letterBody = document.getElementById("s-letter-body").value;
+      state.finaleMessage = document.getElementById("s-finale-message").value;
+      updateCharCounters();
+      markStudioUnsaved();
+    }
+
+    function syncStudioHostUrl() {
+      state.hostUrl = document.getElementById("s-host-url").value.trim();
+      markStudioUnsaved();
+    }
+
+    function toggleStudioLock() {
+      state.lockEnabled = document.getElementById("s-lock-enabled").checked;
+      document.getElementById("s-lock-fields").classList.toggle("hidden", !state.lockEnabled);
+      state.isUnlocked = !state.lockEnabled;
+      markStudioUnsaved();
+    }
+
+    function sanitizeStudioPin() {
+      const el = document.getElementById("s-passcode");
+      el.value = el.value.replace(/\D/g, "").slice(0, 4);
+      state.passcode = el.value.padEnd(4, "0").slice(0, 4);
+      markStudioUnsaved();
+    }
+
+    function autofillForBond() {
+      const preset = BOND_PRESETS[state.bond] || BOND_PRESETS.Friend;
+      state.letterTitle = preset.title;
+      state.letterBody = preset.body;
+      state.finaleMessage = preset.finale;
+      document.getElementById("s-letter-title").value = state.letterTitle;
+      document.getElementById("s-letter-body").value = state.letterBody;
+      document.getElementById("s-finale-message").value = state.finaleMessage;
+      updateCharCounters();
+      markStudioUnsaved();
+      showToast(`Applied ${state.bond} letter & finale note!`, "💌");
+    }
+
+    /* ==========================================================================
+       13. URL COMPRESSION, SUBMIT & SAVE, QR GENERATOR & GITHUB HTML EXPORTER
+       ========================================================================== */
+    function normalizeWebsiteUrl(raw) {
+      let s = String(raw || "").trim();
+      if (!s) s = detectInitialHostUrl();
+      if (!/^https?:\/\//i.test(s)) s = "https://" + s.replace(/^\/+/, "");
+      s = s.split("#")[0].split("?")[0];
+      return s;
+    }
+
+    function buildCleanShortUrl() {
+      return normalizeWebsiteUrl(state.hostUrl);
+    }
+
+    function bytesToBase64Url(bytes) {
+      let bin = "";
+      for (let i = 0; i < bytes.length; i++) bin += String.fromCharCode(bytes[i]);
+      return btoa(bin).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
+    }
+
+    function base64UrlToBytes(str) {
+      let b64 = str.replace(/-/g, "+").replace(/_/g, "/");
+      while (b64.length % 4) b64 += "=";
+      const bin = atob(b64);
+      const out = new Uint8Array(bin.length);
+      for (let i = 0; i < bin.length; i++) out[i] = bin.charCodeAt(i);
+      return out;
+    }
+
+    async function compressStringToToken(str) {
+      const rawBytes = new TextEncoder().encode(str);
+      if (typeof CompressionStream === "function") {
+        try {
+          const cs = new CompressionStream("deflate-raw");
+          const writer = cs.writable.getWriter();
+          writer.write(rawBytes);
+          writer.close();
+          const buf = await new Response(cs.readable).arrayBuffer();
+          const compBytes = new Uint8Array(buf);
+          if (compBytes.length < rawBytes.length) {
+            return "z." + bytesToBase64Url(compBytes);
+          }
+        } catch (e) {}
+      }
+      return "u." + bytesToBase64Url(rawBytes);
+    }
+
+    async function decompressTokenToString(token) {
+      if (token.startsWith("z.") && typeof DecompressionStream === "function") {
+        const bytes = base64UrlToBytes(token.slice(2));
+        const ds = new DecompressionStream("deflate-raw");
+        const writer = ds.writable.getWriter();
+        writer.write(bytes);
+        writer.close();
+        const buf = await new Response(ds.readable).arrayBuffer();
+        return new TextDecoder().decode(buf);
+      }
+      const raw = token.startsWith("u.") ? token.slice(2) : token;
+      return new TextDecoder().decode(base64UrlToBytes(raw));
+    }
+
+    async function buildCompactInstantUrl() {
+      const base = buildCleanShortUrl();
+      const flags =
+        (state.showCountdown ? 1 : 0) |
+        (state.musicEnabled ? 2 : 0) |
+        (state.lockEnabled ? 4 : 0);
+
+      const payload = {
+        r: state.recipient,
+        s: state.sender,
+        b: BONDS.indexOf(state.bond),
+        t: THEME_KEYS.indexOf(state.theme),
+        sg: Math.max(0, BIRTHDAY_SONGS.findIndex((x) => x.id === state.song)),
+        d: state.dateIso,
+        f: flags,
+        lt: state.letterTitle,
+        lb: state.letterBody,
+        fm: state.finaleMessage,
+        w: state.wishes.slice(0, 6),
+        mm: state.memories.slice(0, 5).map((m) => [
+          m.caption || "",
+          m.date || "",
+          m.artType || "starlight",
+          normalizePhotoUrl(m.imageUrl || ""),
+        ]),
+      };
+
+      if (state.lockEnabled) {
+        payload.p = state.passcode || "1225";
+        payload.h = state.hint || "";
+      }
+
+      const token = await compressStringToToken(JSON.stringify(payload));
+      return `${base}#b=${token}`;
+    }
+
+    async function hydrateFromUrl() {
+      const hash = window.location.hash || "";
+      const params = new URLSearchParams(window.location.search || "");
+      const m = hash.match(/#(?:b|data)=([A-Za-z0-9\-_.]+)/);
+      const token = m ? m[1] : params.get("b");
+      if (!token) return false;
+
+      try {
+        const json = await decompressTokenToString(token);
+        const p = JSON.parse(json);
+        if (!p || typeof p !== "object") return false;
+
+        if (p.r) state.recipient = String(p.r).slice(0, 40);
+        if (p.s) state.sender = String(p.s).slice(0, 40);
+        if (typeof p.b === "number" && BONDS[p.b]) state.bond = BONDS[p.b];
+        if (typeof p.t === "number" && THEME_KEYS[p.t]) state.theme = THEME_KEYS[p.t];
+        if (typeof p.sg === "number" && BIRTHDAY_SONGS[p.sg]) state.song = BIRTHDAY_SONGS[p.sg].id;
+        if (p.d) state.dateIso = String(p.d);
+        if (typeof p.f === "number") {
+          state.showCountdown = Boolean(p.f & 1);
+          state.musicEnabled = Boolean(p.f & 2);
+          state.lockEnabled = Boolean(p.f & 4);
+        }
+        state.isUnlocked = !state.lockEnabled;
+        if (p.p) state.passcode = String(p.p).replace(/\D/g, "").slice(0, 4) || "1225";
+        if (p.h !== undefined) state.hint = String(p.h);
+        if (p.lt) state.letterTitle = String(p.lt);
+        if (typeof p.lb === "string") state.letterBody = p.lb;
+        if (typeof p.fm === "string") state.finaleMessage = p.fm;
+        if (Array.isArray(p.w) && p.w.length) {
+          state.wishes = Array.from({ length: 6 }, (_, i) => String(p.w[i] || BIRTHDAY_CONFIG.wishes[i]));
+        }
+        if (Array.isArray(p.mm) && p.mm.length) {
+          state.memories = p.mm.slice(0, 5).map((row, i) => ({
+            id: "link-" + i,
+            caption: String(row[0] || ""),
+            date: String(row[1] || ""),
+            artType: String(row[2] || "starlight"),
+            imageUrl: String(row[3] || ""),
+            imageData: null,
+          }));
+        }
+        return true;
+      } catch (e) {
+        return false;
+      }
+    }
+
+    async function setShareMode(mode) {
+      state.shareMode = mode === "short" ? "short" : "instant";
+      await refreshSavedShareDisplay();
+    }
+
+    async function refreshSavedShareDisplay() {
+      const shortUrl = buildCleanShortUrl();
+      const isShort = state.shareMode === "short";
+      const activeUrl = isShort ? shortUrl : await buildCompactInstantUrl();
+
+      state.savedShareUrl = activeUrl;
+      state.savedQrUrl = activeUrl.length <= 820 ? activeUrl : shortUrl;
+
+      const btnShort = document.getElementById("share-mode-short-btn");
+      const btnInst = document.getElementById("share-mode-instant-btn");
+      if (btnShort && btnInst) {
+        btnShort.style.background = isShort ? "var(--btn-grad)" : "transparent";
+        btnShort.style.color = isShort ? "var(--accent-text)" : "var(--text-muted)";
+        btnInst.style.background = !isShort ? "var(--btn-grad)" : "transparent";
+        btnInst.style.color = !isShort ? "var(--accent-text)" : "var(--text-muted)";
+      }
+
+      const linkField = document.getElementById("share-link-field");
+      if (linkField) linkField.value = activeUrl;
+
+      const lenEl = document.getElementById("share-link-length");
+      if (lenEl) {
+        lenEl.textContent = isShort
+          ? `${activeUrl.length} chars • Ultra-Short`
+          : `${activeUrl.length} chars • Ready-to-Share`;
+      }
+
+      const descEl = document.getElementById("share-mode-desc");
+      if (descEl) {
+        if (!isShort) {
+          descEl.innerHTML = `Opens <strong>ONLY ${escapeHtml(state.recipient)}’s</strong> saved details, theme, song, full letter, finale note &amp; pasted image links right away!`;
+        } else {
+          descEl.innerHTML = `Ultra-short URL for WhatsApp &amp; instant QR scanning! Click <strong>🚀 Download Ready index.html</strong> below and upload it to GitHub Pages so this short URL opens <strong>ONLY ${escapeHtml(state.recipient)}’s</strong> surprise &amp; photos.`;
+        }
+      }
+
+      const warnEl = document.getElementById("placeholder-url-warning");
+      if (warnEl) warnEl.classList.toggle("hidden", !/yourusername\.github\.io/i.test(shortUrl));
+
+      const qrLink = document.getElementById("qr-test-link");
+      if (qrLink) {
+        qrLink.href = state.savedQrUrl;
+        qrLink.textContent = `Opens: ${state.savedQrUrl.length > 52 ? state.savedQrUrl.slice(0, 52) + "…" : state.savedQrUrl} ↗`;
+      }
+
+      await renderQrCanvas(document.getElementById("studio-qr-canvas"), state.savedQrUrl, 240);
+    }
+
+    async function submitAndSaveDetails() {
+      syncStudioInputs();
+      syncStudioHostUrl();
+      savePastedPhotosAsDefault(false);
+      try {
+        localStorage.setItem(SAVED_DRAFT_STORAGE_KEY, JSON.stringify(buildExportedConfigObject(false)));
+      } catch (e) {}
+
+      state.hasSubmitted = true;
+      state.hasUnsavedEdits = false;
+      document.getElementById("studio-unsaved-badge").classList.add("hidden");
+      document.getElementById("saved-share-panel").classList.remove("hidden");
+
+      const songObj = BIRTHDAY_SONGS.find((s) => s.id === state.song) || BIRTHDAY_SONGS[0];
+      document.getElementById("saved-summary-name").textContent = state.recipient;
+      document.getElementById("saved-summary-meta").textContent = `From ${state.sender} • ${state.bond} • ${THEME_LABELS[state.theme]} • ${songObj.emoji} ${songObj.name}`;
+
+      const miniWrap = document.getElementById("saved-photos-mini");
+      miniWrap.innerHTML = "";
+      state.memories.forEach((m) => {
+        const src = getMemoryImageSrc(m);
+        if (!src) return;
+        const img = document.createElement("img");
+        img.src = src;
+        img.alt = "";
+        img.referrerPolicy = "no-referrer";
+        img.className = "w-8 h-8 rounded-lg object-cover border border-white/30 shadow";
+        miniWrap.appendChild(img);
+      });
+
+      renderAllStoryBindings();
+      await refreshSavedShareDisplay();
+      document.getElementById("saved-share-panel").scrollIntoView({ behavior: "smooth", block: "nearest" });
+      showToast(`Saved ${state.recipient}’s surprise, default photos & QR code!`, "🎉");
+    }
+
+    function copyTextSafe(text) {
+      try {
+        const ta = document.createElement("textarea");
+        ta.value = text;
+        ta.setAttribute("readonly", "");
+        ta.style.position = "fixed";
+        ta.style.opacity = "0";
+        document.body.appendChild(ta);
+        ta.focus();
+        ta.select();
+        ta.setSelectionRange(0, text.length);
+        const ok = document.execCommand("copy");
+        document.body.removeChild(ta);
+        return ok;
+      } catch (e) {
+        return false;
+      }
+    }
+
+    function copyShareUrl() {
+      const url = document.getElementById("share-link-field").value || state.savedShareUrl;
+      if (!url) return;
+      const ok = copyTextSafe(url);
+      if (ok) {
+        const btn = document.getElementById("copy-link-btn");
+        if (btn) {
+          btn.textContent = "✓ Copied!";
+          setTimeout(() => (btn.textContent = "📋 Copy Link"), 2000);
+        }
+        showToast("Birthday link copied!", "🔗");
+      } else {
+        document.getElementById("share-link-field").select();
+        showToast("Highlighted — press Ctrl/Cmd + C", "📋");
+      }
+    }
+
+    function shareViaWhatsApp() {
+      const url = document.getElementById("share-link-field").value || state.savedShareUrl;
+      const hintLine = state.lockEnabled ? `\n🔐 Passcode hint: ${state.hint}` : "";
+      const msg = `🎂 Happy Birthday, ${state.recipient}! ✨\nI made a special interactive birthday surprise for you — tap to open:${hintLine}\n${url}`;
+      window.open(`https://wa.me/?text=${encodeURIComponent(msg)}`, "_blank", "noopener,noreferrer");
+    }
+
+    function testRecipientViewNow() {
+      state.envelopeOpened = false;
+      state.poppedBalloons = [];
+      state.polaroidIndex = 0;
+      state.isUnlocked = !state.lockEnabled;
+      state.enteredPin = "";
+      document.getElementById("luxury-envelope").classList.remove("is-opening");
+      resetCakeStage();
+      setRecipientChrome(true);
+      switchTab("experience");
+      goToStoryPage(1);
+      showToast(`Viewing ${state.recipient}’s exact surprise!`, "🎁");
+    }
+
+    function buildExportedConfigObject(hostedMode = true) {
+      return {
+        hostedRecipientMode: hostedMode,
+        recipient: state.recipient,
+        sender: state.sender,
+        bond: state.bond,
+        theme: state.theme,
+        song: state.song,
+        dateIso: state.dateIso,
+        showCountdown: state.showCountdown,
+        musicEnabled: state.musicEnabled,
+        lockEnabled: state.lockEnabled,
+        passcode: state.passcode,
+        hint: state.hint,
+        letterTitle: state.letterTitle,
+        letterBody: state.letterBody,
+        finaleMessage: state.finaleMessage,
+        wishes: state.wishes.slice(0, 6),
+        memories: state.memories.slice(0, 5).map((m) => ({
+          caption: m.caption || "",
+          date: m.date || "",
+          artType: m.artType || "starlight",
+          imageUrl: normalizePhotoUrl(m.imageUrl || ""),
+          imageData: m.imageData || null,
+        })),
+        hostUrl: buildCleanShortUrl(),
+      };
+    }
+
+    let PRISTINE_HTML_TEMPLATE = "";
+
+    function downloadPersonalizedHtml() {
+      try {
+        const cfgObj = buildExportedConfigObject(true);
+        const cfgJson = JSON.stringify(cfgObj, null, 2).replace(/<\/script/gi, "<\\/script");
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(PRISTINE_HTML_TEMPLATE || document.documentElement.outerHTML, "text/html");
+
+        // Remove runtime-injected Tailwind <style> tags (keep only our #app-styles)
+        doc.querySelectorAll("style").forEach((s) => {
+          if (s.id !== "app-styles") s.remove();
+        });
+
+        doc.title = `Happy Birthday, ${state.recipient}! ✨`;
+        doc.body.setAttribute("data-theme", state.theme);
+        doc.body.className = "mode-experience recipient-mode";
+        doc.querySelectorAll(".bind-recipient").forEach((el) => (el.textContent = state.recipient));
+        doc.querySelectorAll(".bind-sender").forEach((el) => (el.textContent = state.sender));
+        doc.querySelectorAll(".bind-bond").forEach((el) => (el.textContent = state.bond));
+
+        const topbar = doc.getElementById("floating-topbar");
+        if (topbar) { topbar.hidden = true; topbar.classList.add("hidden"); }
+        const mini = doc.getElementById("recipient-mini-bar");
+        if (mini) { mini.hidden = false; mini.classList.remove("hidden"); }
+        const studio = doc.getElementById("studio-view");
+        if (studio) { studio.hidden = true; studio.classList.add("hidden"); }
+        const exp = doc.getElementById("experience-view");
+        if (exp) { exp.hidden = false; exp.classList.remove("hidden"); }
+
+        // Clear dynamically filled containers so zero duplicate nodes exist
+        ["stars-container", "balloons-stage-grid", "cake-candles-layer", "polaroid-stack-container", "polaroid-thumb-strip", "studio-photos-list", "studio-wishes-grid", "studio-bond-pills", "studio-songs-grid"].forEach((id) => {
+          const el = doc.getElementById(id);
+          if (el) el.innerHTML = "";
+        });
+
+        let html = "<!DOCTYPE html>\n" + doc.documentElement.outerHTML;
+        const cfgRegex = /const BIRTHDAY_CONFIG = \{[\s\S]*?\n    \};/;
+        html = html.replace(cfgRegex, `const BIRTHDAY_CONFIG = ${cfgJson};`);
+
+        const blob = new Blob([html], { type: "text/html;charset=utf-8" });
+        const blobUrl = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = blobUrl;
+        a.download = "index.html";
+        a.click();
+        setTimeout(() => URL.revokeObjectURL(blobUrl), 3000);
+        showToast("Downloaded ready-to-host index.html!", "🚀");
+      } catch (err) {
+        showToast("Could not build export file", "⚠️");
+      }
+    }
+
+    async function downloadQrCardPng() {
+      const url = state.savedQrUrl || buildCleanShortUrl();
+      try {
+        const c = document.createElement("canvas");
+        c.width = 1000;
+        c.height = 1280;
+        const ctx = c.getContext("2d");
+        const pals = {
+          celestial: { bg1: "#24134e", bg2: "#080416", accent: "#f4c27a", ink: "#fbf8ff", muted: "#c9bfe2" },
+          blush: { bg1: "#fff6f8", bg2: "#f3cdd7", accent: "#be123c", ink: "#38101d", muted: "#784252" },
+          aurora: { bg1: "#114742", bg2: "#051117", accent: "#5eead4", ink: "#f0fdfa", muted: "#a6d5cf" },
+          terracotta: { bg1: "#4d1e36", bg2: "#140814", accent: "#fb923c", ink: "#fff7f0", muted: "#e3bfb3" },
+        };
+        const pal = pals[state.theme] || pals.celestial;
+        const grad = ctx.createLinearGradient(0, 0, 1000, 1280);
+        grad.addColorStop(0, pal.bg1);
+        grad.addColorStop(1, pal.bg2);
+        ctx.fillStyle = grad;
+        ctx.fillRect(0, 0, 1000, 1280);
+
+        ctx.strokeStyle = pal.accent;
+        ctx.lineWidth = 5;
+        ctx.strokeRect(42, 42, 916, 1196);
+        ctx.lineWidth = 1.5;
+        ctx.strokeRect(58, 58, 884, 1164);
+
+        ctx.textAlign = "center";
+        ctx.fillStyle = pal.accent;
+        ctx.font = "bold 26px Inter, sans-serif";
+        ctx.fillText("A BESPOKE BIRTHDAY SURPRISE", 500, 138);
+
+        ctx.fillStyle = pal.ink;
+        ctx.font = "bold 68px Georgia, serif";
+        ctx.fillText(`For ${state.recipient}`, 500, 232);
+
+        ctx.fillStyle = pal.muted;
+        ctx.font = "italic 28px Georgia, serif";
+        ctx.fillText(`Crafted with love by ${state.sender}  •  ${state.bond}`, 500, 290);
+
+        const qrOff = document.createElement("canvas");
+        await renderQrCanvas(qrOff, url, 520);
+        ctx.fillStyle = "#ffffff";
+        ctx.fillRect(200, 356, 600, 600);
+        ctx.drawImage(qrOff, 240, 396, 520, 520);
+
+        ctx.fillStyle = pal.ink;
+        ctx.font = "bold 36px Georgia, serif";
+        ctx.fillText("Scan to Unseal Your Surprise ✨", 500, 1044);
+
+        ctx.fillStyle = pal.muted;
+        ctx.font = "24px Inter, sans-serif";
+        ctx.fillText(
+          state.lockEnabled ? `🔐 Secret PIN Hint: ${state.hint}`.slice(0, 58) : "Point your phone camera at the QR code above",
+          500,
+          1104
+        );
+
+        const a = document.createElement("a");
+        a.download = `Birthday-QR-${state.recipient.replace(/[^a-z0-9]+/gi, "-")}.png`;
+        a.href = c.toDataURL("image/png");
+        a.click();
+        showToast("Printable QR Gift Card downloaded!", "🖼️");
+      } catch (e) {
+        showToast("Could not export QR card", "⚠️");
+      }
+    }
+
+    /* ==========================================================================
+       14. REAL ISO/IEC 18004 QR CODE GENERATOR (CDN + BUILT-IN OFFLINE FALLBACK)
+       ========================================================================== */
+    async function renderQrCanvas(canvas, url, sizePx = 240) {
+      if (!canvas || !url) return;
+      if (window.QRCode && typeof window.QRCode.toCanvas === "function") {
+        try {
+          await window.QRCode.toCanvas(canvas, url, {
+            errorCorrectionLevel: "M",
+            margin: 4,
+            width: sizePx,
+            color: { dark: "#000000", light: "#ffffff" },
+          });
+          return;
+        } catch (e) {}
+      }
+      drawIsoQrToCanvas(canvas, url, sizePx);
+    }
+
+    const QR_SPECS = [
+      null,
+      { dc: 19,  blocks: [[1, 19, 7]], align: [] },
+      { dc: 34,  blocks: [[1, 34, 10]], align: [6, 18] },
+      { dc: 55,  blocks: [[1, 55, 15]], align: [6, 22] },
+      { dc: 80,  blocks: [[1, 80, 20]], align: [6, 26] },
+      { dc: 108, blocks: [[1, 108, 26]], align: [6, 30] },
+      { dc: 136, blocks: [[2, 68, 18]], align: [6, 34] },
+      { dc: 156, blocks: [[2, 78, 20]], align: [6, 22, 38] },
+      { dc: 194, blocks: [[2, 97, 24]], align: [6, 24, 42] },
+      { dc: 232, blocks: [[2, 116, 30]], align: [6, 26, 46] },
+      { dc: 274, blocks: [[2, 68, 18], [2, 69, 18]], align: [6, 28, 50] },
+      { dc: 324, blocks: [[4, 81, 20]], align: [6, 30, 54] },
+      { dc: 370, blocks: [[2, 92, 24], [2, 93, 24]], align: [6, 32, 58] },
+      { dc: 428, blocks: [[4, 107, 26]], align: [6, 34, 62] },
+      { dc: 461, blocks: [[3, 115, 30], [1, 116, 30]], align: [6, 26, 46, 66] },
+      { dc: 523, blocks: [[5, 87, 22], [1, 88, 22]], align: [6, 26, 48, 70] },
+      { dc: 589, blocks: [[5, 98, 24], [1, 99, 24]], align: [6, 26, 50, 74] },
+      { dc: 647, blocks: [[1, 107, 28], [5, 108, 28]], align: [6, 30, 54, 78] },
+      { dc: 721, blocks: [[5, 120, 30], [1, 121, 30]], align: [6, 30, 56, 82] },
+      { dc: 795, blocks: [[3, 113, 28], [4, 114, 28]], align: [6, 30, 58, 86] },
+      { dc: 861, blocks: [[3, 107, 28], [5, 108, 28]], align: [6, 34, 62, 90] },
+    ];
+
+    const GF_EXP = new Uint8Array(512);
+    const GF_LOG = new Uint8Array(256);
+    (function () {
+      let x = 1;
+      for (let i = 0; i < 255; i++) {
+        GF_EXP[i] = x; GF_LOG[x] = i;
+        x <<= 1; if (x & 0x100) x ^= 0x11d;
+      }
+      for (let i = 255; i < 512; i++) GF_EXP[i] = GF_EXP[i - 255];
+    })();
+
+    function gfMul(a, b) { return a === 0 || b === 0 ? 0 : GF_EXP[GF_LOG[a] + GF_LOG[b]]; }
+
+    function rsEcc(data, ecLen) {
+      let gen = [1];
+      for (let i = 0; i < ecLen; i++) {
+        const next = new Array(gen.length + 1).fill(0);
+        const f = GF_EXP[i];
+        for (let j = 0; j < gen.length; j++) { next[j] ^= gen[j]; next[j + 1] ^= gfMul(gen[j], f); }
+        gen = next;
+      }
+      const rem = new Array(ecLen).fill(0);
+      for (const b of data) {
+        const coef = b ^ rem.shift(); rem.push(0);
+        for (let i = 0; i < ecLen; i++) rem[i] ^= gfMul(gen[i + 1], coef);
+      }
+      return rem;
+    }
+
+    function encodeIsoQrMatrix(text) {
+      const bytes = Array.from(new TextEncoder().encode(text));
+      let ver = 1;
+      for (let v = 1; v <= 20; v++) {
+        const cb = v < 10 ? 8 : 16;
+        if (bytes.length <= Math.floor((QR_SPECS[v].dc * 8 - 4 - cb) / 8)) { ver = v; break; }
+        ver = v;
+      }
+      const spec = QR_SPECS[ver];
+      const cb = ver < 10 ? 8 : 16;
+      const dataBytes = bytes.slice(0, Math.floor((spec.dc * 8 - 4 - cb) / 8));
+      const bits = [];
+      const push = (val, n) => { for (let i = n - 1; i >= 0; i--) bits.push((val >>> i) & 1); };
+      push(0b0100, 4); push(dataBytes.length, cb); dataBytes.forEach((b) => push(b, 8));
+      const totalBits = spec.dc * 8;
+      push(0, Math.min(4, totalBits - bits.length));
+      while (bits.length % 8 !== 0) bits.push(0);
+      const pads = [0xec, 0x11]; let pi = 0;
+      while (bits.length < totalBits) push(pads[pi++ % 2], 8);
+
+      const cw = [];
+      for (let i = 0; i < bits.length; i += 8) {
+        let b = 0; for (let j = 0; j < 8; j++) b = (b << 1) | bits[i + j]; cw.push(b);
+      }
+      const dBlks = [], eBlks = []; let cur = 0;
+      for (const [cnt, dl, el] of spec.blocks) {
+        for (let c = 0; c < cnt; c++) {
+          const blk = cw.slice(cur, cur + dl); cur += dl;
+          dBlks.push(blk); eBlks.push(rsEcc(blk, el));
+        }
+      }
+      const inter = [];
+      const maxD = Math.max(...dBlks.map((b) => b.length));
+      for (let i = 0; i < maxD; i++) for (const b of dBlks) if (i < b.length) inter.push(b[i]);
+      const maxE = Math.max(...eBlks.map((b) => b.length));
+      for (let i = 0; i < maxE; i++) for (const b of eBlks) if (i < b.length) inter.push(b[i]);
+
+      const size = ver * 4 + 17;
+      const mat = Array.from({ length: size }, () => new Int8Array(size).fill(-1));
+      const fn = Array.from({ length: size }, () => new Uint8Array(size));
+      const set = (r, c, dark, isF = true) => {
+        if (r < 0 || c < 0 || r >= size || c >= size) return;
+        mat[r][c] = dark ? 1 : 0; if (isF) fn[r][c] = 1;
+      };
+      const finder = (r0, c0) => {
+        for (let dr = -1; dr <= 7; dr++) for (let dc = -1; dc <= 7; dc++) {
+          const r = r0 + dr, c = c0 + dc;
+          if (r < 0 || c < 0 || r >= size || c >= size) continue;
+          const inside = dr >= 0 && dr <= 6 && dc >= 0 && dc <= 6;
+          set(r, c, inside && (dr === 0 || dr === 6 || dc === 0 || dc === 6 || (dr >= 2 && dr <= 4 && dc >= 2 && dc <= 4)), true);
+        }
+      };
+      finder(0, 0); finder(0, size - 7); finder(size - 7, 0);
+      for (let i = 8; i < size - 8; i++) { set(6, i, i % 2 === 0, true); set(i, 6, i % 2 === 0, true); }
+      for (const r of spec.align) for (const c of spec.align) {
+        if (fn[r][c]) continue;
+        for (let dr = -2; dr <= 2; dr++) for (let dc = -2; dc <= 2; dc++) set(r + dr, c + dc, Math.max(Math.abs(dr), Math.abs(dc)) !== 1, true);
+      }
+      for (let i = 0; i <= 8; i++) { if (!fn[8][i]) set(8, i, false, true); if (!fn[i][8]) set(i, 8, false, true); }
+      for (let i = size - 8; i < size; i++) { set(8, i, false, true); set(i, 8, false, true); }
+      set(size - 8, 8, true, true);
+      if (ver >= 7) {
+        let vi = ver << 12;
+        for (let i = 5; i >= 0; i--) if ((vi >>> (i + 12)) & 1) vi ^= 0x1f25 << i;
+        const fv = (ver << 12) | vi;
+        for (let i = 0; i < 18; i++) {
+          const bit = Boolean((fv >>> i) & 1), a = Math.floor(i / 3), b = (i % 3) + size - 11;
+          set(a, b, bit, true); set(b, a, bit, true);
+        }
+      }
+      let bi = 0, up = true; const totB = inter.length * 8;
+      for (let right = size - 1; right >= 1; right -= 2) {
+        if (right === 6) right = 5;
+        for (let step = 0; step < size; step++) {
+          const r = up ? size - 1 - step : step;
+          for (let dx = 0; dx < 2; dx++) {
+            const c = right - dx;
+            if (fn[r][c]) continue;
+            const raw = bi < totB ? ((inter[bi >>> 3] >>> (7 - (bi & 7))) & 1) : 0; bi++;
+            mat[r][c] = (r + c) % 2 === 0 ? (raw ^ 1) : raw;
+          }
+        }
+        up = !up;
+      }
+      const fd = (0b01 << 3) | 0b000; let rem = fd << 10;
+      for (let i = 4; i >= 0; i--) if ((rem >>> (i + 10)) & 1) rem ^= 0x537 << i;
+      const fb = ((fd << 10) | rem) ^ 0x5412;
+      for (let i = 0; i <= 5; i++) set(8, i, Boolean((fb >>> (14 - i)) & 1), true);
+      set(8, 7, Boolean((fb >>> 8) & 1), true); set(8, 8, Boolean((fb >>> 7) & 1), true); set(7, 8, Boolean((fb >>> 6) & 1), true);
+      for (let i = 9; i < 15; i++) set(14 - i, 8, Boolean((fb >>> (14 - i)) & 1), true);
+      for (let i = 0; i < 8; i++) set(8, size - 1 - i, Boolean((fb >>> i) & 1), true);
+      for (let i = 8; i < 15; i++) set(size - 15 + i, 8, Boolean((fb >>> i) & 1), true);
+      return mat;
+    }
+
+    function drawIsoQrToCanvas(canvas, text, px = 240) {
+      const mat = encodeIsoQrMatrix(text);
+      const n = mat.length, quiet = 4, total = n + quiet * 2;
+      canvas.width = px; canvas.height = px;
+      const ctx = canvas.getContext("2d");
+      ctx.fillStyle = "#ffffff"; ctx.fillRect(0, 0, px, px);
+      const cell = px / total;
+      ctx.fillStyle = "#000000";
+      for (let r = 0; r < n; r++) for (let c = 0; c < n; c++) {
+        if (mat[r][c] === 1) ctx.fillRect(Math.floor((c + quiet) * cell), Math.floor((r + quiet) * cell), Math.ceil(cell), Math.ceil(cell));
+      }
+    }
+
+    /* ==========================================================================
+       15. ESCAPING, KEYBOARD/SWIPE CONTROLS & SILKY BOOTSTRAP
+       ========================================================================== */
+    function escapeHtml(str) {
+      return String(str || "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+    }
+    function escapeAttr(str) {
+      return escapeHtml(str).replace(/'/g, "&#39;");
+    }
+
+    window.addEventListener("keydown", (e) => {
+      const tag = (e.target && e.target.tagName || "").toLowerCase();
+      if (tag === "input" || tag === "textarea" || tag === "select") return;
+      if (state.activeTab !== "experience") return;
+      if (state.storyPage === 1 && isCardLocked()) {
+        if (/^[0-9]$/.test(e.key)) enterPinDigit(e.key);
+        else if (e.key === "Backspace") backspacePin();
+        return;
+      }
+      if (e.key === "ArrowRight") stepStoryPage(1);
+      else if (e.key === "ArrowLeft") stepStoryPage(-1);
+    });
+
+    let touchX = 0, touchY = 0;
+    window.addEventListener("touchstart", (e) => {
+      if (e.touches && e.touches.length === 1) {
+        touchX = e.touches[0].clientX; touchY = e.touches[0].clientY;
+      }
+    }, { passive: true });
+
+    window.addEventListener("touchend", (e) => {
+      if (state.activeTab !== "experience" || !e.changedTouches || e.changedTouches.length !== 1) return;
+      const dx = e.changedTouches[0].clientX - touchX;
+      const dy = e.changedTouches[0].clientY - touchY;
+      if (Math.abs(dx) < 60 || Math.abs(dx) < Math.abs(dy) * 1.45) return;
+      stepStoryPage(dx < 0 ? 1 : -1);
+    }, { passive: true });
+
+    function hideBootCurtain() {
+      const curtain = document.getElementById("boot-curtain");
+      if (!curtain) return;
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => curtain.classList.add("is-done"));
+      });
+    }
+
+    function restoreLocalSavedDraft() {
+      try {
+        const raw = localStorage.getItem(SAVED_DRAFT_STORAGE_KEY);
+        if (!raw) return false;
+        const p = JSON.parse(raw);
+        if (!p || typeof p !== "object") return false;
+        if (p.recipient) state.recipient = p.recipient;
+        if (p.sender) state.sender = p.sender;
+        if (BONDS.includes(p.bond)) state.bond = p.bond;
+        if (THEME_KEYS.includes(p.theme)) state.theme = p.theme;
+        if (BIRTHDAY_SONGS.some((s) => s.id === p.song)) state.song = p.song;
+        if (p.dateIso) state.dateIso = p.dateIso;
+        if (p.showCountdown !== undefined) state.showCountdown = Boolean(p.showCountdown);
+        if (p.musicEnabled !== undefined) state.musicEnabled = Boolean(p.musicEnabled);
+        if (p.lockEnabled !== undefined) {
+          state.lockEnabled = Boolean(p.lockEnabled);
+          state.isUnlocked = !state.lockEnabled;
+        }
+        if (p.passcode) state.passcode = p.passcode;
+        if (p.hint !== undefined) state.hint = p.hint;
+        if (p.letterTitle) state.letterTitle = p.letterTitle;
+        if (typeof p.letterBody === "string") state.letterBody = p.letterBody;
+        if (typeof p.finaleMessage === "string") state.finaleMessage = p.finaleMessage;
+        if (Array.isArray(p.wishes) && p.wishes.length) state.wishes = p.wishes.slice(0, 6);
+        if (Array.isArray(p.memories) && p.memories.length) {
+          state.memories = p.memories.slice(0, 5).map((m, i) => ({ ...m, id: "draft-" + i }));
+        }
+        if (p.hostUrl) state.hostUrl = p.hostUrl;
+        return true;
+      } catch (e) {
+        return false;
+      }
+    }
+
+    async function bootFromCurrentUrl() {
+      const fromLink = await hydrateFromUrl();
+      const forceStudio = new URLSearchParams(window.location.search).get("studio") === "1";
+
+      // If not opening a recipient's shared link or pre-baked hosted export, restore user's saved draft & default pasted photos
+      if (!fromLink && !BIRTHDAY_CONFIG.hostedRecipientMode) {
+        restoreLocalSavedDraft();
+        loadDefaultPhotosFromStorage();
+      }
+
+      state.envelopeOpened = false;
+      state.poppedBalloons = [];
+      state.polaroidIndex = 0;
+      state.enteredPin = "";
+      state.isUnlocked = !state.lockEnabled;
+      document.getElementById("luxury-envelope").classList.remove("is-opening");
+      resetCakeStage();
+
+      const recipientMode = (fromLink || BIRTHDAY_CONFIG.hostedRecipientMode) && !forceStudio;
+      setRecipientChrome(recipientMode);
+      switchTab("experience");
+      goToStoryPage(1);
+
+      try {
+        if (document.fonts && document.fonts.ready) {
+          await Promise.race([document.fonts.ready, new Promise((r) => setTimeout(r, 320))]);
+        }
+      } catch (e) {}
+      hideBootCurtain();
+    }
+
+    window.addEventListener("resize", resizeFxCanvas);
+    window.addEventListener("hashchange", () => {
+      if (/#(?:b|data)=/.test(window.location.hash || "")) {
+        const curtain = document.getElementById("boot-curtain");
+        if (curtain) curtain.classList.remove("is-done");
+        bootFromCurrentUrl();
+      }
+    });
+
+    window.addEventListener("DOMContentLoaded", () => {
+      PRISTINE_HTML_TEMPLATE = "<!DOCTYPE html>\n" + document.documentElement.outerHTML;
+      resizeFxCanvas();
+      initAmbientStars();
+      bootFromCurrentUrl();
+      setInterval(updateCountdown, 1000);
+    });
+  </script>
+</body>
+</html>
+
+On Wed, Nov 25, 2026 at 10:52 AM Saketha Muralikrishna (xWF) <saketham@xwf.google.com> wrote:
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <title>Bespoke Birthday Surprise &amp; QR Studio</title>
 
   <!-- Google Fonts: Inter (UI), Playfair Display (Editorial Serif), Caveat (Handwritten) -->
@@ -1359,10 +5288,10 @@
         "Love that surrounds you every single day",
       ],
       memories: [
-        { imageUrl: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQwgSn3UNuJMJ0OEzB_e1_WGPh1YJeZjthr4QHs5nX8xA&s=10", caption: "Chasing starlight on our favorite rooftop", date: "Spring 2026", artType: "starlight", imageData: null },
-        { imageUrl: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRlmmeXl2J0iQ6vjAkzmrHbh9q9o0070bWEtVuwwNF5YQ&s=10", caption: "Iced coffee & three hours of nonstop stories", date: "Summer 2026", artType: "cafe", imageData: null },
-        { imageUrl: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS8kn4_oikBVX4VS--R0_9qIbWTw1IqnSZ7LHOTBnRu7Q&s=10", caption: "Golden hour drive with the playlist turned up", date: "August 2026", artType: "sunset", imageData: null },
-        { imageUrl: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRLm5BSIKDg1bBTDi1BNZE1qPeEIWSc6dXPTuTka78wvQ&s=10", caption: "Sparklers & midnight wishes under clear skies", date: "Autumn 2026", artType: "sparklers", imageData: null },
+        { imageUrl: "", caption: "Chasing starlight on our favorite rooftop", date: "Spring 2026", artType: "starlight", imageData: null },
+        { imageUrl: "", caption: "Iced coffee & three hours of nonstop stories", date: "Summer 2026", artType: "cafe", imageData: null },
+        { imageUrl: "", caption: "Golden hour drive with the playlist turned up", date: "August 2026", artType: "sunset", imageData: null },
+        { imageUrl: "", caption: "Sparklers & midnight wishes under clear skies", date: "Autumn 2026", artType: "sparklers", imageData: null },
         { imageUrl: "", caption: "Here is to soaring even higher this year", date: "Today ✨", artType: "balloons", imageData: null },
       ],
     };
